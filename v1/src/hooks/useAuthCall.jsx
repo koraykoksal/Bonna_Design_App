@@ -6,13 +6,14 @@ import {
     fetchFail,
     fetchLoginSuccess,
     fetchLogoutSuccess,
-    fetchLoginManagerPersonels,
-    fetchTwiserStart,
-    fetchTwiserLoginSuccess,
+    signLoginSuccess,
 
 } from '../features/authSlice'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, getAuth } from "firebase/auth"
+import { auth } from "../auth/firebase"
+
 
 const useAuthCall = () => {
 
@@ -21,6 +22,7 @@ const useAuthCall = () => {
 
 
 
+    //! erp login
     const login = async ({ username, password }) => {
 
         dispatch(fetchStart())
@@ -68,89 +70,46 @@ const useAuthCall = () => {
         navigate('/')
     }
 
+    
 
-    const get_managerPersonels = async ({ username, password }) => {
+    //! firebase email and password login
+    const signIn = async (info) => {
 
         dispatch(fetchStart())
 
         try {
 
-
-            const options = {
-                method: 'POST',
-                url: `${import.meta.env.VITE_ERP_PERSONELS_URL}`,
-                headers: {
-                    'USERNM': username,
-                    'PASS': password,
-                    'APIKEY': `${import.meta.env.VITE_ERP_API_KEY}`
-
-                }
-            }
-
-
-            const { data } = await axios(options)
-            const ekip = JSON.parse(data[0].EKIP)
-
-            if (Array.isArray(ekip.PERSONEL)) {
-
-                let multiSonuc = ekip.PERSONEL.map((personel, index) => ({
-                    personel,
-                    tc: ekip.TC[index]
-                }))
-
-                // setManagerPersonelData(multiSonuc)
-                dispatch(fetchLoginManagerPersonels(multiSonuc))
-            }
-            else {
-
-                let singleSonuc = []
-                const dizi = [ekip]
-
-                for (let i = 0; i < dizi.length; i++) {
-                    singleSonuc.push({
-                        personel: dizi[0].PERSONEL,
-                        tc: dizi[0].TC
-                    })
-                }
-                // setManagerPersonelData(singleSonuc)
-                dispatch(fetchLoginManagerPersonels(singleSonuc))
-            }
-
-
-
-            // dispatch(fetchLoginManagerPersonels(data))
-
-
+            //? mevcut kullanıcının giriş yapması için kullanılan firebase metodu
+            let userCredential = await signInWithEmailAndPassword(
+                auth,
+                info.email,
+                info.password
+            );
+            dispatch(signLoginSuccess(userCredential?.user))
+            navigate("/bonnadesign");
+            toastSuccessNotify("Logged in successfully!");
 
         } catch (error) {
-            dispatch(fetchFail())
-            console.log("managerPersonels function error: ", error)
+            console.log("signIn error: ", error)
+            toastErrorNotify(error.message);
         }
-    }
 
-
-    const twiserLogin = async () => {
-
-        // TWISER sistmeine istek atıldığınzaman farklı veri kaynaklarından veri aldığı için CORS (cross-origin-resource-sharing) işlemi yapılıyor. bundan dolayı proxy ayarı yapılması gerekir
-        //? Vite config dosyası içerisine yazılan proxy ayarı ile işlem yapılır
-
-        dispatch(fetchTwiserStart())
-
-        try {
-            const response = await axios.post(`${import.meta.env.VITE_PROXY_BASE_ADDRESS}`, {
-                Email: `${import.meta.env.VITE_TWISER_LOGIN_EMAIL}`,
-                Password: `${import.meta.env.VITE_TWISER_LOGIN_PASSWORD}`
-            });
-            dispatch(fetchTwiserLoginSuccess(response?.data));
-        } catch (error) {
-            console.error('twiserLogin Error:', error);
-        }
     }
 
 
 
+    //! firebase loout
+    const signOff = async () => {
 
-    return { login, logout, get_managerPersonels, twiserLogin }
+
+        signOut(auth);
+        dispatch(logoutSuccess())
+        navigate("/login");
+        toastSuccessNotify("Logged out successfully!");
+    }
+
+
+    return { login, logout, signIn, signOff }
 }
 
 

@@ -3,12 +3,15 @@ import React, { useCallback } from 'react'
 import { useState, useEffect } from 'react';
 import { uploadPageBgStyle } from '../styles/globalStyle';
 import { useSelector } from 'react-redux';
+import useBonnaDesign from '../hooks/useBonnaDesign';
 
 
 const ImageUpload = () => {
 
     const { currentUser } = useSelector((state) => state.auth)
 
+    const {postImageDataToFirebase} = useBonnaDesign()
+    const [files, setFiles] = useState("")
     const [info, setInfo] = useState({
 
         imageCode: "",
@@ -33,23 +36,30 @@ const ImageUpload = () => {
         setOpen(false)
     }
 
+
+
     //* string değerlerin bilgisini alan fonksiyon
     const handleChangeInfo = (e) => {
         const { value } = e.target
         setInfo({ ...info, [e.target.name]: value.toUpperCase() })
     }
 
+
     //* dosya ismini alan fonksiyon
     const handleChangeFileName = (e) => {
 
         const file = e.target.files[0]
+
         if (file) {
+            setFiles(file)
+
             setInfo(prevInfo => ({
                 ...prevInfo, fileName: file.name
             }))
         }
 
     }
+
 
     //* key word bilgilerini alan ve dizi içine kayıt eden fonksiyon
     const handleImageKeyWordChange = (index) => (e) => {
@@ -60,6 +70,7 @@ const ImageUpload = () => {
             imageKeyWords: [...prevInfo.imageKeyWords.map((item, idx) => idx == index ? value.toUpperCase() : item.toUpperCase())]
         }))
     }
+
 
     // Dosya sürükle-bırak ve seçme işlemini ele alacak fonksiyon
     const handleFiles = useCallback((files) => {
@@ -72,36 +83,35 @@ const ImageUpload = () => {
         }
     }, []);
 
-    // Dosya seçici input üzerinden dosyaları ele alma
-    const handleInputChange = (event) => {
-        handleFiles(event.target.files);
-    };
 
     // Sürükle-bırak işlemleri için event handlerlar
     const handleDragOver = (event) => {
         event.preventDefault(); // Default davranışı engelle
     };
 
+
+    // Sürükle bırak işleminde resim dosyası bırakıldığı zaman yapılacak işlem
     const handleDrop = (e) => {
         e.preventDefault();
         const files = e.dataTransfer.files;
-        if(files.length > 0){
+        if (files.length > 0) {
 
+            handleFiles(e.dataTransfer.files);
         }
-        handleFiles(event.dataTransfer.files);
-    };
 
+    };
 
 
     //* kayıt işlemini yapan fonksiyon
     const handleSave = (e) => {
+        
         e.preventDefault()
+
+        postImageDataToFirebase(files,info)
 
     }
 
-
-    console.log(info)
-
+ 
 
     return (
         <div style={uploadPageBgStyle}>
@@ -111,7 +121,7 @@ const ImageUpload = () => {
                 <Typography align='center' color={'#000000'} letterSpacing={5} fontFamily={'Calibri'}>Upload Image</Typography>
 
 
-                <Container sx={{ display: 'flex', flexDirection: 'column', gap: 5, pb: 10 }} maxWidth={'md'} >
+                <Container sx={{ display: 'flex', flexDirection: 'column', gap: 5, pb: 10 }} maxWidth={'md'} component={'form'} onSubmit={handleSave}>
 
                     <TextField
                         fullWidth
@@ -211,30 +221,41 @@ const ImageUpload = () => {
                         onChange={handleChangeInfo}
                     />
 
-                    <div
+                    <TextField
+                    required
+                    type='file'
+                    name='fileName'
+                    id='fileName'
+                    onChange={handleChangeFileName}
+                    inputProps={{
+                        accept:'.png , .jpeg , .jpg'
+                    }}
+                    
+                    
+                    />
+
+                    {/* <div
                         onDragOver={handleDragOver}
                         onDrop={handleDrop}
-                        style={{ border: '2px dashed #ccc', padding: '20px', marginBottom: '10px' }}
+                        style={{ border: '2px dashed #ccc', padding: '20px', marginBottom: '10px', borderRadius: 5, height: 130, position: 'relative' }}
                     >
-                        Dosyayı buraya sürükleyip bırakın veya seçmek için tıklayın
-                    </div>
-                    <input
-                        type="file"
-                        onChange={handleChangeFileName}
-                        style={{ display: 'none' }} // Dosya input'unu gizle
-                        id="fileInput" // Input'a bir id atayarak label ile ilişkilendir
-                    />
-                    <input
-                        type="text"
-                        value={info.fileName} // Seçilen dosyanın ismini göster
-                        placeholder="Dosya ismi burada görünecek"
-                        readOnly // Kullanıcının değeri manuel olarak değiştirmesini engelle
-                    />
-                    <label htmlFor="fileInput" style={{ cursor: 'pointer' }}>
-                        Dosya Seç
-                    </label>
 
-                    <Button variant='contained' sx={{ letterSpacing: 5, textTransform: 'none' }} onClick={handleSave}>Save</Button>
+                        <Typography color={'#bebebe'} align='center'>
+                            {
+                                info.fileName ? info.fileName : 'Image Move Here'
+                            }
+                        </Typography>
+
+                        <input
+                            id='fileInput'
+                            onChange={handleChangeFileName}
+                            style={{ bottom: 10, position: 'absolute' }}
+                            type='file'
+                            accept='.png , .jpeg , .jpg'
+                        />
+                    </div> */}
+
+                    <Button variant='contained' type='submit' sx={{ letterSpacing: 5, textTransform: 'none' }}>Save</Button>
 
 
                 </Container>

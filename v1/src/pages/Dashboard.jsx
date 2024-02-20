@@ -36,15 +36,19 @@ function Dashboard() {
 
     const pages = [
         {
-            title: 'Ana Sayfa',
+            title: 'Home',
             url: '/bonnadesign/'
+        },
+        {
+            title: 'Upload',
+            url: '/bonnadesign/imageupload'
         },
     ];
 
     const settings = [
         {
-            title: 'Upload',
-            url: '/bonnadesign/imageupload'
+            title: 'Settings',
+            url: '/bonnadesign/settings'
         },
         
     ]
@@ -68,17 +72,17 @@ function Dashboard() {
         setAnchorElUser(null);
     };
 
+
     //avatarın name bilgisi
     const avatarNick = () => {
+    
         const name = currentUser[0]
         const boslukIndex = currentUser.indexOf(" ")
         const surname = currentUser[boslukIndex + 1]
 
         avatarName = name + surname
-
         return avatarName
     }
-
 
 
     return (

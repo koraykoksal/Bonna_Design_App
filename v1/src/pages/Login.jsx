@@ -15,33 +15,28 @@ export const Login = () => {
 
 
   const [info, setInfo] = useState({
-      username:"",
-      password:""
+    username: "",
+    password: ""
   })
 
-  const { login,get_managerPersonels, twiserLogin } = useAuthCall()
+  const { login, signIn } = useAuthCall()
 
-  const handleChange=(e)=>{
+  const handleChange = (e) => {
     setInfo({ ...info, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit=(e)=>{
+  const handleSubmit = (e) => {
 
     e.preventDefault()
 
     //login işlemi için çalıştırılan hook
+
     login(info)
-
-    //login sonrası yöneticiye bağlı personellerin litesini çekmek için çalıştırılan hook
-    get_managerPersonels(info)
-
-    // twiser sisteminde login talebi gönder
-    twiserLogin()
-
+    // signIn(info)
 
     setInfo({
-      username:"",
-      password:""
+      username: "",
+      password: ""
     })
   }
 
@@ -50,21 +45,26 @@ export const Login = () => {
   return (
 
 
-    <Container sx={{ mt:15 }}>
+    <Container sx={{ mt: 15 }}>
+
+
+      <Typography align='center' variant='h5' p={3} letterSpacing={5} fontFamily={'Calibri'}>Bonna Design Research App</Typography>
 
       <Grid
         container
         justifyContent="center"
         direction="row-reverse"
         sx={{
-          alignItems:'center',
+          alignItems: 'center',
           p: 2,
-          gap:5,
+          gap: 5,
         }}
       >
 
 
+
         <Grid item xs={10} sm={8} md={6}>
+
           <Avatar
             sx={{
               backgroundColor: "secondary.light",
@@ -84,21 +84,21 @@ export const Login = () => {
             Login
           </Typography>
 
-   
+
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }} component='form' onSubmit={handleSubmit}>
             <TextField
-            required
-              label="Kullanıcı Adı"
+              required
+              label="Username"
               name="username"
               id="username"
-              type="text"
+              type="username"
               variant="outlined"
               value={info.username}
               onChange={handleChange}
             />
             <TextField
-            required
-              label="Parola"
+              required
+              label="Password"
               name="password"
               id="password"
               type="password"
@@ -106,8 +106,8 @@ export const Login = () => {
               value={info.password}
               onChange={handleChange}
             />
-            <Button variant="contained" type="submit" sx={{letterSpacing:5,textTransform:'none'}}>
-              Giriş
+            <Button variant="contained" type="submit" sx={{ letterSpacing: 5, textTransform: 'none' }}>
+              Login
             </Button>
 
           </Box>

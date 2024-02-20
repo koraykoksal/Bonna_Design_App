@@ -8,6 +8,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { PrivateRouter } from './PrivateRouter'
 import Dashboard from '../pages/Dashboard'
 import ImageUpload from '../pages/ImageUpload'
+import Settings from '../pages/Settings'
 
 
 
@@ -25,6 +26,7 @@ export const AppRouter = () => {
             <Route path='' element={<Dashboard />}>
               <Route index element={<Home />} />
               <Route path='imageupload' element={<ImageUpload/>}/>
+              <Route path='settings' element={<Settings/>}/>
             </Route>
 
           </Route>
