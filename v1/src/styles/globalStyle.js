@@ -1,11 +1,13 @@
 import pattern2 from "../assets/img/bg2.png"
 import pattern3 from "../assets/img/bg3.png"
-import pattern4 from "../assets/img/bg4.png"
 import pattern5 from "../assets/img/bg5.png"
-import pattern7 from "../assets/img/bg7.png"
-import pattern8 from "../assets/img/bg8.png"
-import pattern10 from "../assets/img/bg10.png"
 import pattern11 from "../assets/img/bg11.png"
+import imgur1 from "../assets/img/imgur.jpg"
+import imgur2 from "../assets/img/imgur2.png"
+import imgur3 from "../assets/img/imgur3.jpg"
+import imgur4 from "../assets/img/imgur4.png"
+import imgur5 from "../assets/img/imgur5.jpg"
+import imgur6 from "../assets/img/imgur6.jpg"
 
 
 export const homePageBgStyle={
@@ -13,6 +15,16 @@ export const homePageBgStyle={
     height: "100vh",
     overflow:'auto',
     backgroundImage: `url(${pattern11})`,
+    backgroundPosition: "center",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+}
+
+export const loginPageBgStyle={
+    width: "100%",
+    height: "100vh",
+    overflow:'auto',
+    backgroundImage: `url(${imgur6})`,
     backgroundPosition: "center",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",

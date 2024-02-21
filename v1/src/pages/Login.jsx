@@ -10,6 +10,8 @@ import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
 import useAuthCall from '../hooks/useAuthCall'
 import { useState } from 'react'
+import { CardMedia } from '@mui/material'
+import { loginPageBgStyle } from '../styles/globalStyle'
 
 export const Login = () => {
 
@@ -44,86 +46,86 @@ export const Login = () => {
 
   return (
 
+    <div style={loginPageBgStyle}>
 
-    <Container sx={{ mt: 15 }}>
-
-
-      <Typography align='center' variant='h5' p={3} letterSpacing={5} fontFamily={'Calibri'}>Bonna Design Research App</Typography>
-
-      <Grid
-        container
-        justifyContent="center"
-        direction="row-reverse"
-        sx={{
-          alignItems: 'center',
-          p: 2,
-          gap: 5,
-        }}
-      >
+      <Container sx={{ mt: 15 }}>
 
 
+        <Typography align='center' variant='h5' p={3} letterSpacing={5} color={'#0B60B0'} fontWeight={700}>Bonna Design Research App</Typography>
 
-        <Grid item xs={10} sm={8} md={6}>
-
-          <Avatar
-            sx={{
-              backgroundColor: "secondary.light",
-              m: "auto",
-              width: 40,
-              height: 40,
-            }}
-          >
-            <LockIcon size="30" />
-          </Avatar>
-          <Typography
-            variant="h4"
-            align="center"
-            mb={4}
-            color="secondary.light"
-          >
-            Login
-          </Typography>
+        <Grid
+          container
+          justifyContent="center"
+          direction="row-reverse"
+          sx={{
+            alignItems: 'center',
+            p: 2,
+            gap: 5,
+          }}
+        >
 
 
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }} component='form' onSubmit={handleSubmit}>
-            <TextField
-              required
-              label="Username"
-              name="username"
-              id="username"
-              type="username"
-              variant="outlined"
-              value={info.username}
-              onChange={handleChange}
-            />
-            <TextField
-              required
-              label="Password"
-              name="password"
-              id="password"
-              type="password"
-              variant="outlined"
-              value={info.password}
-              onChange={handleChange}
-            />
-            <Button variant="contained" type="submit" sx={{ letterSpacing: 5, textTransform: 'none' }}>
-              Login
-            </Button>
 
-          </Box>
+          <Grid item xs={10} sm={8} md={6}>
+
+            <Avatar
+              sx={{
+                backgroundColor: "secondary.light",
+                margin:'auto',
+                marginBottom:3,
+                width: 40,
+                height: 40,
+              }}
+            >
+              <LockIcon size="30" color='blue'/>
+            </Avatar>
 
 
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }} component='form' onSubmit={handleSubmit}>
+              <TextField
+                required
+                label="Username"
+                name="username"
+                id="username"
+                type="username"
+                variant="outlined"
+                value={info.username}
+                onChange={handleChange}
+                inputProps={{
+                  style: { color: 'black' }
+                }}
+              />
+              <TextField
+                required
+                label="Password"
+                name="password"
+                id="password"
+                type="password"
+                variant="outlined"
+                value={info.password}
+                onChange={handleChange}
+              />
+              <Button variant="contained" type="submit" sx={{ letterSpacing: 5, textTransform: 'none' }}>
+                Login
+              </Button>
+
+            </Box>
+
+
+
+          </Grid>
+
+          <Grid item xs={10} sm={8} md={5}>
+            <Container>
+              <img src={image} alt="img" />
+            </Container>
+          </Grid>
 
         </Grid>
 
-        <Grid item xs={10} sm={8} md={5}>
-          <Container>
-            <img src={image} alt="img" />
-          </Container>
-        </Grid>
+      </Container>
 
-      </Grid>
-    </Container>
+    </div>
 
   )
 
