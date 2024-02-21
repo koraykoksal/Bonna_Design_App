@@ -14,7 +14,7 @@ export const homePageBgStyle={
     width: "100%",
     height: "100vh",
     overflow:'auto',
-    backgroundImage: `url(${pattern11})`,
+    backgroundImage: `url(${pattern2})`,
     backgroundPosition: "center",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",

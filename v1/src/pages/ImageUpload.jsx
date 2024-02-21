@@ -10,7 +10,7 @@ const ImageUpload = () => {
 
     const { currentUser } = useSelector((state) => state.auth)
 
-    const {postImageDataToFirebase} = useBonnaDesign()
+    const { postImageDataToFirebase } = useBonnaDesign()
     const [files, setFiles] = useState("")
     const [info, setInfo] = useState({
 
@@ -71,6 +71,7 @@ const ImageUpload = () => {
         }))
     }
 
+    
 
     // Dosya sürükle-bırak ve seçme işlemini ele alacak fonksiyon
     const handleFiles = useCallback((files) => {
@@ -102,16 +103,26 @@ const ImageUpload = () => {
     };
 
 
-    //* kayıt işlemini yapan fonksiyon
+    //! kayıt işlemini yapan fonksiyon
     const handleSave = (e) => {
-        
+
         e.preventDefault()
 
-        postImageDataToFirebase(files,info)
+        postImageDataToFirebase(files, info)
+
+        setInfo({
+            imageCode: "",
+            collectionName: "",
+            designName: "",
+            options: "",
+            fileName: "",
+            imageKeyWords: Array(5).fill(''), // Başlangıçta 5 boş string ile doldurulmuş bir dizi
+            imageOwner: ""
+        })
 
     }
 
- 
+
 
     return (
         <div style={uploadPageBgStyle}>
@@ -222,16 +233,16 @@ const ImageUpload = () => {
                     />
 
                     <TextField
-                    required
-                    type='file'
-                    name='fileName'
-                    id='fileName'
-                    onChange={handleChangeFileName}
-                    inputProps={{
-                        accept:'.png , .jpeg , .jpg'
-                    }}
-                    
-                    
+                        required
+                        type='file'
+                        name='fileName'
+                        id='fileName'
+                        onChange={handleChangeFileName}
+                        inputProps={{
+                            accept: '.png , .jpeg , .jpg'
+                        }}
+
+
                     />
 
                     {/* <div
