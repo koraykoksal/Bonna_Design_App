@@ -6,24 +6,22 @@ import { homePageBgStyle } from '../styles/globalStyle';
 import Search from '../components/Search';
 import useBonnaDesign from '../hooks/useBonnaDesign';
 import Images from '../components/Images';
+import { toastWarnNotify } from '../helper/ToastNotify';
+import { useSelector } from 'react-redux';
 
 
 export const Home = () => {
 
-
-  const { getAllImageData } = useBonnaDesign()
-
-  const [imgkeys, setImgkeys] = useState([])
+  const { getImageData } = useBonnaDesign()
+  const {designData} = useSelector((state)=>state.bonnadesign)
   const [info, setInfo] = useState({
     keywords: ""
   })
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setInfo({ ...info, [name]:value })
+    setInfo({ ...info, [name]:value }) 
   }
-
-
 
   //! search butonu çalıştır
   const handleSubmit = (e) => {
@@ -36,20 +34,19 @@ export const Home = () => {
   const handleKeyDown = (e) => {
     if (e.keyCode == 13) {
       keywordControl(info)
-
-      getAllImageData(imgkeys)
     }
   }
 
 
   //! regex işlemi ile info içerisindeki '.' ve '   ' fazladan boşluk karakterlerini kaldırır
   function keywordControl(data) {
-
     //?* split(' ) işlemi ile string verisini split içinde belirtilen ayıraç ile ayırarak bir array formatı oluşturulur
     const newStr = data?.keywords.replace(/[. ]+/g, ' ').toUpperCase().split(' ')
-    setImgkeys(newStr)
-   
+    //! hook tarafındaki resim datasına erişmek için dosyayı bul
+    getImageData(newStr)
+    return setInfo({...info,newStr})
   }
+
 
 
   return (
@@ -62,7 +59,7 @@ export const Home = () => {
 
         <Search info={info} setInfo={setInfo} handleChange={handleChange} handleSubmit={handleSubmit} handleKeyDown={handleKeyDown} />
 
-        <Images />
+        <Images designData={designData}/>
 
       </Box>
 

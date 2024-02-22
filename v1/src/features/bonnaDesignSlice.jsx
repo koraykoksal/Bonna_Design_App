@@ -1,31 +1,52 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 
-const initialState={
+const initialState = {
 
-    loading:false,
-    error:false
+    fileUpload_Loading: false,
+    loading: false,
+    error: false,
+    designData:[]
 }
 
 
 
 
 
-const bonnaDesignSlice=createSlice({
+const bonnaDesignSlice = createSlice({
 
 
-    name : 'bonnadesign',
+    name: 'bonnadesign',
     initialState,
 
-    reducers:{
-        fetchStart:(state)=>{
-            state.loading=true
-            state.error=false
+    reducers: {
+        fetchUploadStart: (state) => {
+            state.fileUpload_Loading = true
+            state.error = false
 
         },
-        fetchFail:(state)=>{
-            state.loading=false
-            state.error=true
+        fetchUploadEnd: (state) => {
+            state.fileUpload_Loading = false
+            state.error = false
+
+        },
+        fetchSearchStart: (state) => {
+            state.loading = true
+            state.error = false
+            state.designData=[]
+
+        },
+        fetchSearchEnd: (state) => {
+            state.loading = false
+            state.error = false
+
+        },
+        fetchDesignData:(state,{payload})=>{
+            state.designData = payload
+        },
+        fetchFail: (state) => {
+            state.loading = false
+            state.error = true
         }
 
     }
@@ -33,9 +54,13 @@ const bonnaDesignSlice=createSlice({
 
 export const {
 
-    fetchStart,
-    fetchFail
+    fetchUploadStart,
+    fetchUploadEnd,
+    fetchSearchStart,
+    fetchSearchEnd,
+    fetchFail,
+    fetchDesignData
 
-}=bonnaDesignSlice.actions
+} = bonnaDesignSlice.actions
 
 export default bonnaDesignSlice.reducer

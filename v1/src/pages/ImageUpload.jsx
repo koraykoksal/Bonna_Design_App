@@ -4,11 +4,13 @@ import { useState, useEffect } from 'react';
 import { uploadPageBgStyle } from '../styles/globalStyle';
 import { useSelector } from 'react-redux';
 import useBonnaDesign from '../hooks/useBonnaDesign';
+import { toastWarnNotify } from '../helper/ToastNotify';
 
 
 const ImageUpload = () => {
 
     const { currentUser } = useSelector((state) => state.auth)
+    const { fileUpload_Loading } = useSelector((state) => state.bonnadesign)
 
     const { postImageDataToFirebase } = useBonnaDesign()
     const [files, setFiles] = useState("")
@@ -30,19 +32,32 @@ const ImageUpload = () => {
     })
 
 
-    const [open, setOpen] = useState(false)
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => {
-        setOpen(false)
+    //?* türkçe karakterleri engelleyen fonksiyon
+    function turkishCharacterControl(chracter) {
+        return chracter.replace(/[çğşüöÇĞİŞÜÖ]/g, '')
     }
-
 
 
     //* string değerlerin bilgisini alan fonksiyon
     const handleChangeInfo = (e) => {
         const { value } = e.target
-        setInfo({ ...info, [e.target.name]: value.toUpperCase() })
+        //?* TÜRKÇE KARAKTERLERİ TESPİT ET VE SİL
+        const index = turkishCharacterControl(value)
+
+        setInfo({ ...info, [e.target.name]: index.toUpperCase() })
     }
+
+
+    //* key word bilgilerini alan ve dizi içine kayıt eden fonksiyon
+    const handleImageKeyWordChange = (index) => (e) => {
+        const { value } = e.target
+        const newChracters = turkishCharacterControl(value)
+        setInfo(prevInfo => ({
+            ...prevInfo,
+            imageKeyWords: [...prevInfo.imageKeyWords.map((item, idx) => idx == index ? newChracters.toUpperCase() : item.toUpperCase())]
+        }))
+    }
+
 
 
     //* dosya ismini alan fonksiyon
@@ -60,18 +75,6 @@ const ImageUpload = () => {
 
     }
 
-
-    //* key word bilgilerini alan ve dizi içine kayıt eden fonksiyon
-    const handleImageKeyWordChange = (index) => (e) => {
-        const { value } = e.target
-
-        setInfo(prevInfo => ({
-            ...prevInfo,
-            imageKeyWords: [...prevInfo.imageKeyWords.map((item, idx) => idx == index ? value.toUpperCase() : item.toUpperCase())]
-        }))
-    }
-
-    
 
     // Dosya sürükle-bırak ve seçme işlemini ele alacak fonksiyon
     const handleFiles = useCallback((files) => {
@@ -123,6 +126,7 @@ const ImageUpload = () => {
     }
 
 
+  
 
     return (
         <div style={uploadPageBgStyle}>
@@ -144,6 +148,7 @@ const ImageUpload = () => {
                         onChange={handleChangeInfo}
                     />
                     <TextField
+                        required
                         fullWidth
                         type='text'
                         name='collectionName'
@@ -174,6 +179,7 @@ const ImageUpload = () => {
                     <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3 }}>
 
                         <TextField
+                            required
                             fullWidth
                             type='text'
                             name='imageKeyWords'
@@ -223,6 +229,7 @@ const ImageUpload = () => {
 
 
                     <TextField
+                        required
                         fullWidth
                         type='text'
                         name='imageOwner'
@@ -266,7 +273,18 @@ const ImageUpload = () => {
                         />
                     </div> */}
 
-                    <Button variant='contained' type='submit' sx={{ letterSpacing: 5, textTransform: 'none' }}>Save</Button>
+                    {
+                        fileUpload_Loading ?
+                            (
+                                <Button className='loader' sx={{ margin: 'auto' }}></Button>
+                            )
+                            :
+                            (
+                                <Button variant='contained' type='submit' sx={{ letterSpacing: 5, textTransform: 'none' }}>Save</Button>
+                            )
+                    }
+
+
 
 
                 </Container>

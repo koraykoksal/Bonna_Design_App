@@ -1,6 +1,7 @@
 
 import { configureStore ,getDefaultMiddleware} from "@reduxjs/toolkit";
 import authReducer from '../features/authSlice'
+import bonnaDesignReducer from '../features/bonnaDesignSlice'
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
  
@@ -11,11 +12,13 @@ const persistConfig = {
 }
 
 const persistedReducer = persistReducer(persistConfig, authReducer)
+const persistedDesignReducer = persistReducer(persistConfig, bonnaDesignReducer)
 
 const store=configureStore({
 
   reducer:{
     auth:persistedReducer,
+    bonnadesign:persistedDesignReducer,
   }
 
   
