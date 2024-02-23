@@ -7,9 +7,8 @@ import { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material'
 
 
-const DesignData_Table = ({ designData, info, setInfo, delHandleOpen, handleOpen }) => {
+const DesignData_Table = ({ designData, info, setInfo, handleOpen, delHandleOpen }) => {
 
-    console.log(JSON.stringify(designData))
 
     const dataGrid_Columns = [
         // {
@@ -52,6 +51,7 @@ const DesignData_Table = ({ designData, info, setInfo, delHandleOpen, handleOpen
             align: "center",
             flex: 1,
         },
+
         {
             field: "imgUrl",
             headerName: "Image ",
@@ -60,8 +60,8 @@ const DesignData_Table = ({ designData, info, setInfo, delHandleOpen, handleOpen
             align: "center",
             flex: 1,
             renderCell: (params) => (
-                <img loading='lazy' src={params.value} alt="" style={{ width: '85px', height: 'auto',objectFit:'cover'}} />
-              ),
+                <img loading='lazy' src={params.value} alt="" style={{ width: '85px', height: 'auto', objectFit: 'cover' }} />
+            ),
         },
         {
             field: "imageOwner",
@@ -81,17 +81,8 @@ const DesignData_Table = ({ designData, info, setInfo, delHandleOpen, handleOpen
             align: "center",
             flex: 1,
             renderCell: ({ id,
-                row: {
-                    is_merkezi,
-                    yogunluk,
-                    nozzlecap,
-                    kasetsicaklik,
-                    tankbasinc,
-                    astarkalinlik,
-                    astarlamayapankisi,
-                    aciklama,
-                    redkabul,
-                    urun_kodu,
+                rows: {
+                    fileName
                 } }) => {
                 return [
                     <GridActionsCellItem
@@ -102,17 +93,7 @@ const DesignData_Table = ({ designData, info, setInfo, delHandleOpen, handleOpen
                             handleOpen()
                             setInfo({
                                 id,
-                                type: 'Astarlama',
-                                is_merkezi,
-                                yogunluk,
-                                nozzlecap,
-                                kasetsicaklik,
-                                tankbasinc,
-                                astarkalinlik,
-                                astarlamayapankisi,
-                                aciklama,
-                                redkabul,
-                                urun_kodu,
+                                fileName
                             })
                         }}
 
@@ -123,7 +104,10 @@ const DesignData_Table = ({ designData, info, setInfo, delHandleOpen, handleOpen
                         label="Delete"
                         onClick={() => {
                             delHandleOpen()
-                            setInfo({ id, type: 'Astarlama' })
+                            setInfo({
+                                id,
+                                fileName
+                            })
                         }}
 
                     />,

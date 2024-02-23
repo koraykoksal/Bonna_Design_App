@@ -1,16 +1,18 @@
 import { Box, Typography } from '@mui/material'
 import React from 'react'
 import useBonnaDesign from '../hooks/useBonnaDesign'
-import { useEffect,useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import DesignData_Table from '../components/tables/DesignData_Table'
+import DeleteModal from '../components/delete/DeleteModal'
 
 
 const Settings = () => {
 
-  const {getFile_and_Image_data,getRealTime_dataFromDb} = useBonnaDesign()
-  const {designData} = useSelector((state)=>state.bonnadesign)
+  const { getFile_and_Image_data, getRealTime_dataFromDb } = useBonnaDesign()
+  const { designData } = useSelector((state) => state.bonnadesign)
 
+  const [info, setInfo] = useState([])
 
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true);
@@ -25,7 +27,21 @@ const Settings = () => {
   useEffect(() => {
     getRealTime_dataFromDb()
   }, [])
+
+
+  useEffect(() => {
+    
+    const result = designData.map(item=>{
+      return{
+        id:item.id,
+
+      }
+    })
+
+  }, [designData])
   
+
+  console.log(designData)
 
   return (
     <div>
@@ -35,16 +51,15 @@ const Settings = () => {
 
         <Typography color={'#000000'} align='center' mt={10} letterSpacing={5}>Settings</Typography>
 
-        <DesignData_Table 
-        open={open} 
-        setOpen={setOpen} 
-        handleClose={handleClose} 
-        delOpen={delOpen} 
-        setdelOpen={setdelOpen}
-        handleOpen={handleOpen}
-        delHandleOpen={delHandleOpen}
-        designData={designData}
+        <DesignData_Table
+          designData={designData}
+          handleOpen={handleOpen}
+          delHandleOpen={delHandleOpen}
+          info={info}
+          setInfo={setInfo}
         />
+
+        <DeleteModal delOpen={delOpen} delHandleClose={delHandleClose} info={info} />
 
       </Box>
 

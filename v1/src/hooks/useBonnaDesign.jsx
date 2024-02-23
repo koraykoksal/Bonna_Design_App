@@ -190,6 +190,10 @@ const useBonnaDesign = () => {
     }
 
 
+    const removeDesignData=(id)=>{
+
+    }
+
     return {
 
         postImageDataToFirebase,
