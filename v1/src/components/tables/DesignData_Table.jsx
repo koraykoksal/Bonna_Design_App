@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material'
 
 
-const DesignData_Table = ({ designData, info, setInfo, handleOpen, delHandleOpen }) => {
+const DesignData_Table = ({ designData,info, setInfo, handleOpen, delHandleOpen }) => {
 
 
     const dataGrid_Columns = [
@@ -71,6 +71,14 @@ const DesignData_Table = ({ designData, info, setInfo, handleOpen, delHandleOpen
             align: "center",
             flex: 1,
         },
+        {
+            field: "createdUser",
+            headerName: "Created User",
+            minWidth: 150,
+            headerAlign: "center",
+            align: "center",
+            flex: 1,
+        },
 
 
         {
@@ -81,9 +89,22 @@ const DesignData_Table = ({ designData, info, setInfo, handleOpen, delHandleOpen
             align: "center",
             flex: 1,
             renderCell: ({ id,
-                rows: {
-                    fileName
-                } }) => {
+                row: {
+                    // collectionName,
+                    // createdUser,
+                    // designName,
+                    fileName,
+                    // imageCode,
+                    // imageKeyWords,
+                    // imageOwner,
+                    // imgUrl,
+                    // options,
+                    // createDate,
+                    // createMonth,
+                    // createTime,
+                    // createYear,
+                }
+            }) => {
                 return [
                     <GridActionsCellItem
                         key={"edit"}
@@ -93,7 +114,19 @@ const DesignData_Table = ({ designData, info, setInfo, handleOpen, delHandleOpen
                             handleOpen()
                             setInfo({
                                 id,
-                                fileName
+                                // collectionName,
+                                // createdUser,
+                                // designName,
+                                fileName,
+                                // imageCode,
+                                // imageKeyWords,
+                                // imageOwner,
+                                // imgUrl,
+                                // options,
+                                // createDate,
+                                // createMonth,
+                                // createTime,
+                                // createYear,
                             })
                         }}
 
@@ -106,7 +139,19 @@ const DesignData_Table = ({ designData, info, setInfo, handleOpen, delHandleOpen
                             delHandleOpen()
                             setInfo({
                                 id,
-                                fileName
+                                // collectionName,
+                                // createdUser,
+                                // designName,
+                                fileName,
+                                // imageCode,
+                                // imageKeyWords,
+                                // imageOwner,
+                                // imgUrl,
+                                // options,
+                                // createDate,
+                                // createMonth,
+                                // createTime,
+                                // createYear,
                             })
                         }}
 

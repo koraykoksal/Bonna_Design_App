@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getStorage, ref, uploadBytes, getDownloadURL, getMetadata, listAll, list } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL, getMetadata, listAll, list, deleteObject } from "firebase/storage";
 import { getDatabase, onValue, remove, set, update, ref as dbRef } from "firebase/database"
 import { getFirestore, setDoc, doc } from "firebase/firestore";
 import { uid } from "uid"
@@ -161,45 +161,76 @@ const useBonnaDesign = () => {
             const res = snapShot.val()
             const result = Object.keys(res).map(key => { return { id: key, ...res[key] } })
 
-            
-        })  
+
+        })
 
 
     }
 
 
     //! settings sayfasında çalışan hook
-    const getRealTime_dataFromDb=()=>{
+    const getRealTime_dataFromDb = () => {
 
         try {
-            
+
             const db = getDatabase()
             const vall = dbRef(db, 'images') // realtime db dosya yolunu göster
 
-            onValue(vall,(snapShot)=>{
+            onValue(vall, (snapShot) => {
                 const res = snapShot.val()
-                const result = Object.keys(res).map(key=>{return{id:key,...res[key]}})
+                const result = Object.keys(res).map(key => { return { id: key, ...res[key] } })
 
                 dispatch(fetchDesignData(result))
             })
 
         } catch (error) {
-            console.log("getRealTime_dataFromDb: ",error)
+            console.log("getRealTime_dataFromDb: ", error)
             throw error
         }
     }
 
 
-    const removeDesignData=(id)=>{
+    //! storage den veri sil
+    const removeDesignFileData = (fileName) => {
 
+        const storage = getStorage();
+
+        const desertRef = ref(storage, `images/${fileName}`);
+
+        // Delete the file
+        deleteObject(desertRef).then(() => {
+            toastSuccessNotify('Image file deleted')
+        }).catch((error) => {
+            toastErrorNotify('Not deleted !')
+        });
     }
+
+
+    //! realtime db den veri sil
+    const removeDesignData=async(id)=>{
+
+        try {
+            
+            const db = getDatabase()
+            await remove(dbRef(db,`images/${id}`))
+            toastSuccessNotify('Image data deleted')
+
+        } catch (error) {
+            toastErrorNotify('not deleted !')
+            console.log("removeDesignData: ",error)
+        }
+    }
+
+
 
     return {
 
         postImageDataToFirebase,
         getImageData,
         getFile_and_Image_data,
-        getRealTime_dataFromDb
+        getRealTime_dataFromDb,
+        removeDesignFileData,
+        removeDesignData
     }
 
 

@@ -22,19 +22,17 @@ const style = {
 
 const DeleteModal = ({ delHandleClose, delOpen, info }) => {
 
-    
-
-    const {getRealTime_dataFromDb} = useBonnaDesign()
+    const {getRealTime_dataFromDb,removeDesignFileData,removeDesignData} = useBonnaDesign()
 
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        if (info) {
-          
-            // getRealTime_dataFromDb()
+        if (info.id) {
+            removeDesignFileData(info.fileName) // storage den sil
+            removeDesignData(info.id)   // realtime db den sil
+            getRealTime_dataFromDb()    // güncel datayı çek
         }
         delHandleClose()
-
     }
 
 

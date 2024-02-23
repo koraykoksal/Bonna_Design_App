@@ -9,10 +9,25 @@ import DeleteModal from '../components/delete/DeleteModal'
 
 const Settings = () => {
 
-  const { getFile_and_Image_data, getRealTime_dataFromDb } = useBonnaDesign()
+  const { getRealTime_dataFromDb } = useBonnaDesign()
   const { designData } = useSelector((state) => state.bonnadesign)
 
-  const [info, setInfo] = useState([])
+  const [info, setInfo] = useState({
+    id: "",
+    collectionName: "",
+    createdUser: "",
+    designName: "",
+    fileName: "",
+    imageCode: "",
+    imageKeyWords: "",
+    imageOwner: "",
+    imgUrl: "",
+    options: "",
+    createDate: "",
+    createMonth: "",
+    createTime: "",
+    createYear: "",
+  })
 
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true);
@@ -29,19 +44,7 @@ const Settings = () => {
   }, [])
 
 
-  useEffect(() => {
-    
-    const result = designData.map(item=>{
-      return{
-        id:item.id,
 
-      }
-    })
-
-  }, [designData])
-  
-
-  console.log(designData)
 
   return (
     <div>
