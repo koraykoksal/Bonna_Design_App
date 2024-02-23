@@ -13,14 +13,21 @@ import { useSelector } from 'react-redux';
 export const Home = () => {
 
   const { getImageData } = useBonnaDesign()
-  const {designData,searchData} = useSelector((state)=>state.bonnadesign)
+  const { designData, searchData } = useSelector((state) => state.bonnadesign)
   const [info, setInfo] = useState({
     keywords: ""
   })
 
+
+  //?* türkçe karakterleri engelleyen fonksiyon
+  function turkishCharacterControl(chracter) {
+    return chracter.replace(/[çğşüöÇĞİŞÜÖ]/g, '')
+  }
+
   const handleChange = (e) => {
     const { name, value } = e.target
-    setInfo({ ...info, [name]:value }) 
+    const index = turkishCharacterControl(value)
+    setInfo({ ...info, [name]: index })
   }
 
   //! search butonu çalıştır
@@ -44,22 +51,23 @@ export const Home = () => {
     const newStr = data?.keywords.replace(/[. ]+/g, ' ').toUpperCase().split(' ')
     //! hook tarafındaki resim datasına erişmek için dosyayı bul
     getImageData(newStr)
-    return setInfo({...info,newStr})
+    return setInfo({ ...info, newStr })
   }
 
 
+  console.log(info)
 
   return (
 
     <div style={homePageBgStyle}>
 
-      <Box sx={{ display: 'flex', flexDirection: 'column', p:3, gap: 5 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', p: 3, gap: 5 }}>
 
         <Typography align='center' color={'#000000'} letterSpacing={5} fontFamily={'Calibri'} mt={10}>Search Image</Typography>
 
         <Search info={info} setInfo={setInfo} handleChange={handleChange} handleSubmit={handleSubmit} handleKeyDown={handleKeyDown} />
 
-        <Images searchData={searchData}/>
+        <Images searchData={searchData} />
 
       </Box>
 
