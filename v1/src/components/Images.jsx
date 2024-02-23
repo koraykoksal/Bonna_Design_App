@@ -2,7 +2,7 @@ import { Box, Card, CardActionArea, CardContent, CardMedia, Typography } from '@
 import React, { useState } from 'react'
 import ImageDetail_Modal from './modals/ImageDetail_Modal';
 
-const Images = ({ designData }) => {
+const Images = ({ searchData }) => {
 
     const [selectedData, setSelectedData] = useState([]);
 
@@ -23,7 +23,7 @@ const Images = ({ designData }) => {
             <Box display={'flex'} justifyContent={'center'} gap={3} flexWrap={'wrap'}>
 
                 {
-                    designData?.map((item, id) => (
+                    searchData?.map((item, id) => (
 
                         <CardActionArea key={id} style={{ maxWidth: 500, margin: "auto", marginTop: "3.5rem", marginBottom: "3.5rem" }}>
 
@@ -33,15 +33,9 @@ const Images = ({ designData }) => {
                                 component="img"
                                 height="450"
                                 src={item.imgUrl}
-                                sx={{ borderRadius: '0.5rem', height: 'auto', backgroundColor: 'transparent' }}
+                                sx={{ borderRadius: '0.5rem', height: 'auto', backgroundColor: 'transparent', p: 2 }}
                                 onClick={() => handleCardClick(item)}
                             />
-
-
-                            {/* <CardContent sx={{ display: 'flex', justifyContent: 'center', gap: 1, flexWrap: 'wrap' }}>
-                                <Typography variant='subitle2'>Collection : {item?.collectionName}</Typography>
-                                <Typography variant='subitle2'>Designer : {item?.imageOwner}</Typography>
-                            </CardContent> */}
 
                         </CardActionArea>
                     ))

@@ -14,8 +14,8 @@ const style = {
     transform: 'translate(-50%, -50%)',
     // maxWidth: '80%',
     width: '75%',
-    // height: 'auto',
-    maxHeight:'85%',
+    height: '90%',
+    // maxHeight:'85%',
     borderRadius: '5px',
     bgcolor: '#dddddd',
     boxShadow: 24,
@@ -45,14 +45,14 @@ const ImageDetail_Modal = ({ open, handleClose, selectedData }) => {
 
                     <CardHeader
                         
-                        title={selectedData?.collectionName}
-                        subheader={selectedData?.imageOwner}
+                        title={`Collection : ${selectedData?.collectionName}`}
+                        subheader={`Designer : ${selectedData?.imageOwner}`}
                     />
                     <CardMedia
                         component="img"
-                        height="100%"
+                        height="90%"
                         image={selectedData?.imgUrl}
-                        // style={{ margin: 'auto' }}
+                        style={{ padding:2,objectFit:'contain'}}
                     />
 
 

@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux';
 export const Home = () => {
 
   const { getImageData } = useBonnaDesign()
-  const {designData} = useSelector((state)=>state.bonnadesign)
+  const {designData,searchData} = useSelector((state)=>state.bonnadesign)
   const [info, setInfo] = useState({
     keywords: ""
   })
@@ -53,13 +53,13 @@ export const Home = () => {
 
     <div style={homePageBgStyle}>
 
-      <Box sx={{ display: 'flex', flexDirection: 'column', pt: 10, gap: 5 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', p:3, gap: 5 }}>
 
-        <Typography align='center' color={'#000000'} letterSpacing={5} fontFamily={'Calibri'}>Search Image</Typography>
+        <Typography align='center' color={'#000000'} letterSpacing={5} fontFamily={'Calibri'} mt={10}>Search Image</Typography>
 
         <Search info={info} setInfo={setInfo} handleChange={handleChange} handleSubmit={handleSubmit} handleKeyDown={handleKeyDown} />
 
-        <Images designData={designData}/>
+        <Images searchData={searchData}/>
 
       </Box>
 

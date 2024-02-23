@@ -131,9 +131,9 @@ const ImageUpload = () => {
     return (
         <div style={uploadPageBgStyle}>
 
-            <Box sx={{ display: 'flex', flexDirection: 'column', pt: 10, gap: 5 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', p:3, gap: 5 }}>
 
-                <Typography align='center' color={'#000000'} letterSpacing={5} fontFamily={'Calibri'}>Upload Image</Typography>
+                <Typography align='center' color={'#000000'} letterSpacing={5} fontFamily={'Calibri'} mt={10}>Upload Image</Typography>
 
 
                 <Container sx={{ display: 'flex', flexDirection: 'column', gap: 5, pb: 10 }} maxWidth={'md'} component={'form'} onSubmit={handleSave}>

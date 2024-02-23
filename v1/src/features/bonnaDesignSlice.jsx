@@ -6,10 +6,9 @@ const initialState = {
     fileUpload_Loading: false,
     loading: false,
     error: false,
-    designData:[]
+    searchData:[],
+    designData:[],
 }
-
-
 
 
 
@@ -41,6 +40,9 @@ const bonnaDesignSlice = createSlice({
             state.error = false
 
         },
+        fetchSearchData:(state,{payload})=>{
+            state.searchData = payload
+        },
         fetchDesignData:(state,{payload})=>{
             state.designData = payload
         },
@@ -59,7 +61,8 @@ export const {
     fetchSearchStart,
     fetchSearchEnd,
     fetchFail,
-    fetchDesignData
+    fetchDesignData,
+    fetchSearchData
 
 } = bonnaDesignSlice.actions
 

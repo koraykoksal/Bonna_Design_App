@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL, getMetadata, listAll, list } from "firebase/storage";
 import { getDatabase, onValue, remove, set, update, ref as dbRef } from "firebase/database"
 import { getFirestore, setDoc, doc } from "firebase/firestore";
 import { uid } from "uid"
 import { toastSuccessNotify, toastErrorNotify, toastWarnNotify } from "../helper/ToastNotify"
-import { fetchDesignData, fetchFail, fetchSearchEnd, fetchSearchStart, fetchUploadEnd, fetchUploadStart } from "../features/bonnaDesignSlice";
+import { fetchDesignData, fetchFail, fetchSearchData, fetchSearchEnd, fetchSearchStart, fetchUploadEnd, fetchUploadStart } from "../features/bonnaDesignSlice";
 
 
 const useBonnaDesign = () => {
@@ -87,6 +87,7 @@ const useBonnaDesign = () => {
 
 
 
+    //! search sayfasındaki çalışan hook
     const getImageData = async (imgkeys) => {
 
         dispatch(fetchSearchStart())
@@ -105,8 +106,8 @@ const useBonnaDesign = () => {
                     const data = result.filter(item =>
                         item.imageKeyWords && item.imageKeyWords.some(keyword => imgkeys.includes(keyword))
                     );
-                    
-                    dispatch(fetchDesignData(data))
+
+                    dispatch(fetchSearchData(data))
 
                     dispatch(fetchSearchEnd())
                 }
@@ -125,11 +126,76 @@ const useBonnaDesign = () => {
     }
 
 
+    const getFile_and_Image_data = () => {
+
+        const db = getDatabase() // realtime db bilgisini çek
+        const store = getStorage() //storage bilgisini çek
+
+        const listRef = ref(store, 'images') // storage ve dosya yolunu göster
+        const vall = dbRef(db, 'images') // realtime db dosya yolunu göster
+
+
+        // images dizi içinde kayıtlı olan dosya isimlerini buraya gönder
+        let files = []
+
+        // listAll ile tüm storage de kayıtl bilgileri çeker
+        listAll(listRef)
+            .then((res) => {
+
+                // res.prefixes.forEach((folderRef) => {
+                //     console.log(folderRef)
+                // });
+
+                // kayıtlı dosya isimlerini getir
+                res?.items?.forEach((itemRef) => {
+                    files.push(itemRef.name)
+                    return itemRef
+                });
+
+            }).catch((error) => {
+                console.log(error)
+            });
+
+        // realtime db den verileri çek
+        onValue(vall, (snapShot) => {
+            const res = snapShot.val()
+            const result = Object.keys(res).map(key => { return { id: key, ...res[key] } })
+
+            
+        })  
+
+
+    }
+
+
+    //! settings sayfasında çalışan hook
+    const getRealTime_dataFromDb=()=>{
+
+        try {
+            
+            const db = getDatabase()
+            const vall = dbRef(db, 'images') // realtime db dosya yolunu göster
+
+            onValue(vall,(snapShot)=>{
+                const res = snapShot.val()
+                const result = Object.keys(res).map(key=>{return{id:key,...res[key]}})
+
+                dispatch(fetchDesignData(result))
+            })
+
+        } catch (error) {
+            console.log("getRealTime_dataFromDb: ",error)
+            throw error
+        }
+    }
+
 
     return {
 
         postImageDataToFirebase,
-        getImageData
+        getImageData,
+        getFile_and_Image_data,
+        getRealTime_dataFromDb
     }
 
 
