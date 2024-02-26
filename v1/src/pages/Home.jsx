@@ -55,8 +55,6 @@ export const Home = () => {
   }
 
 
-  console.log(info)
-
   return (
 
     <div style={homePageBgStyle}>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { AiFillEdit } from "react-icons/ai";
+import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { DataGrid, GridToolbar, GridActionsCellItem } from '@mui/x-data-grid';
 import { useSelector } from 'react-redux';
@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material'
 
 
-const DesignData_Table = ({ designData,info, setInfo, handleOpen, delHandleOpen }) => {
+const DesignData_Table = ({ designData,info, setInfo, handleOpen, delHandleOpen, editHandleOpen }) => {
 
 
     const dataGrid_Columns = [
@@ -90,43 +90,43 @@ const DesignData_Table = ({ designData,info, setInfo, handleOpen, delHandleOpen 
             flex: 1,
             renderCell: ({ id,
                 row: {
-                    // collectionName,
-                    // createdUser,
-                    // designName,
+                    collectionName,
+                    createdUser,
+                    designName,
                     fileName,
-                    // imageCode,
-                    // imageKeyWords,
-                    // imageOwner,
-                    // imgUrl,
-                    // options,
-                    // createDate,
-                    // createMonth,
-                    // createTime,
-                    // createYear,
+                    imageCode,
+                    imageKeyWords,
+                    imageOwner,
+                    imgUrl,
+                    options,
+                    createDate,
+                    createMonth,
+                    createTime,
+                    createYear,
                 }
             }) => {
                 return [
                     <GridActionsCellItem
                         key={"edit"}
-                        icon={<AiFillEdit size={25} style={{ color: '#0802A3' }} cursor='pointer' />}
+                        icon={<MdEdit size={25} style={{ color: '#FAA300' }} cursor='pointer' />}
                         label="Edit"
                         onClick={() => {
-                            handleOpen()
+                            editHandleOpen()
                             setInfo({
                                 id,
-                                // collectionName,
-                                // createdUser,
-                                // designName,
+                                collectionName,
+                                createdUser,
+                                designName,
                                 fileName,
-                                // imageCode,
-                                // imageKeyWords,
-                                // imageOwner,
-                                // imgUrl,
-                                // options,
-                                // createDate,
-                                // createMonth,
-                                // createTime,
-                                // createYear,
+                                imageCode,
+                                imageKeyWords,
+                                imageOwner,
+                                imgUrl,
+                                options,
+                                createDate,
+                                createMonth,
+                                createTime,
+                                createYear,
                             })
                         }}
 

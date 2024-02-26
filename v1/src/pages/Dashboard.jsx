@@ -198,7 +198,7 @@ function Dashboard() {
                                                 ("")
                                         }
 
-                                        <Button sx={{ color: '#C70039', fontWeight: '700', textTransform: 'none' }} onClick={() => logout()}>Çıkış</Button>
+                                        <Button sx={{ color: '#C70039', fontWeight: '700', textTransform: 'none' }} onClick={() => logout()}>Out</Button>
 
                                     </Box>
                                 </Menu>

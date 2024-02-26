@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import DesignData_Table from '../components/tables/DesignData_Table'
 import DeleteModal from '../components/delete/DeleteModal'
+import ImageEdit_Modal from '../components/modals/ImageEdit_Modal'
 
 
 const Settings = () => {
@@ -38,6 +39,10 @@ const Settings = () => {
   const delHandleOpen = () => setdelOpen(true);
   const delHandleClose = () => setdelOpen(false);
 
+  const [editOpen, setEditOpen] = React.useState(false);
+  const editHandleOpen = () => setEditOpen(true);
+  const editHandleClose = () => setEditOpen(false);
+
 
   useEffect(() => {
     getRealTime_dataFromDb()
@@ -58,11 +63,14 @@ const Settings = () => {
           designData={designData}
           handleOpen={handleOpen}
           delHandleOpen={delHandleOpen}
+          editHandleOpen={editHandleOpen}
           info={info}
           setInfo={setInfo}
         />
 
         <DeleteModal delOpen={delOpen} delHandleClose={delHandleClose} info={info} />
+
+        <ImageEdit_Modal editOpen={editOpen} editHandleClose={editHandleClose} info={info} setInfo={setInfo}/>
 
       </Box>
 

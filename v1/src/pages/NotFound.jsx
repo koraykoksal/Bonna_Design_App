@@ -26,7 +26,7 @@ export const NotFound = () => {
       <Button 
       variant='contained' 
       sx={{fontSize:'25px',mt:'50px',p:'0.5rem',borderRadius:'1rem',borderColor:'1px solid #000000',color:'#ffffff',width:'150px','&:hover':{cursor:'pointer',backgroundColor:'transparent',color:'#000000'}}}
-      onClick={()=>navigate('/byperformance')}
+      onClick={()=>navigate('/bonnadesign')}
       >
         Home
       </Button>
