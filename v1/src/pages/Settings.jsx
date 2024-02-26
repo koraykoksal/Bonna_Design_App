@@ -10,9 +10,9 @@ import ImageEdit_Modal from '../components/modals/ImageEdit_Modal'
 
 const Settings = () => {
 
-  const { getRealTime_dataFromDb } = useBonnaDesign()
+  const { getRealTime_dataFromDb,updateImageData } = useBonnaDesign()
   const { designData } = useSelector((state) => state.bonnadesign)
-
+  const [files, setFiles] = useState("")
   const [info, setInfo] = useState({
     id: "",
     collectionName: "",
@@ -51,6 +51,57 @@ const Settings = () => {
 
 
 
+  //?* türkçe karakterleri engelleyen fonksiyon
+  function turkishCharacterControl(chracter) {
+    return chracter.replace(/[çğşüöÇĞİŞÜÖ]/g, '')
+  }
+
+
+  //* string değerlerin bilgisini alan fonksiyon
+  const handleChangeInfo = (e) => {
+    const { value } = e.target
+    //?* TÜRKÇE KARAKTERLERİ TESPİT ET VE SİL
+    const index = turkishCharacterControl(value)
+
+    setInfo({ ...info, [e.target.name]: index.toUpperCase() })
+  }
+
+
+  //* dosya ismini alan fonksiyon
+  const handleChangeFileName = (e) => {
+
+    const file = e.target.files[0]
+
+    if (file) {
+      setFiles(file)
+      setInfo({...info, updateFileName: file.name || ""})
+    }
+    // setInfo(prevInfo => ({
+    //   ...prevInfo, updateFileName: file.name
+    // }))
+  
+
+  }
+
+
+  const handleImageKeyWordChange = (index) => (e) => {
+    const { value } = e.target
+    const newChracters = turkishCharacterControl(value)
+    setInfo(prevInfo => ({
+      ...prevInfo,
+      imageKeyWords: [...prevInfo.imageKeyWords.map((item, idx) => idx == index ? newChracters.toUpperCase() : item.toUpperCase())]
+    }))
+  }
+
+
+  const handleUpdate = (e) => {
+    console.log("update func. runn")
+    e.preventDefault()
+    updateImageData(files, info) //update fonksiyonu
+    getRealTime_dataFromDb() //güncellenmiş datayı getir
+}
+
+
   return (
     <div>
 
@@ -70,7 +121,7 @@ const Settings = () => {
 
         <DeleteModal delOpen={delOpen} delHandleClose={delHandleClose} info={info} />
 
-        <ImageEdit_Modal editOpen={editOpen} editHandleClose={editHandleClose} info={info} setInfo={setInfo}/>
+        <ImageEdit_Modal editOpen={editOpen} editHandleClose={editHandleClose} info={info} handleChangeInfo={handleChangeInfo} handleChangeFileName={handleChangeFileName} handleImageKeyWordChange={handleImageKeyWordChange} handleUpdate={handleUpdate}/>
 
       </Box>
 

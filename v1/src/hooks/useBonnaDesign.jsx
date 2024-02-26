@@ -59,6 +59,60 @@ const useBonnaDesign = () => {
     }
 
 
+    //! bu fonksiyon storage de bulunan resim dosyasını siler daha sonra yeni resim dosyasını yükler
+    const updateImageData = async (files, info) => {
+
+        dispatch(fetchUploadStart())
+
+        const storage = getStorage();   //storage bilgisini çek
+        const db = getDatabase()  //database bilgisini çek
+
+        //* yüklenecek dosya yolu
+        // const filePath = `images/${info?.updateFileName}`;    //storage dosya yolunu göster
+        const fileRef = ref(storage, `images/${info?.updateFileName}`);
+
+        // silinecek dosya yolu
+        const desertRef = ref(storage, `images/${info?.fileName}`);
+
+        try {
+            // Eğer updateFileName varsa, önce mevcut dosyayı sil ve yeni dosyayı yükle
+            if (info?.updateFileName) {
+                // Mevcut dosyayı sil
+                await deleteObject(desertRef);
+
+                // Yeni dosyayı Firebase Storage'a yükle
+                await uploadBytes(fileRef, files);
+
+                // Yüklenen dosyanın URL'sini al
+                const downloadURL = await getDownloadURL(fileRef);
+
+                if (downloadURL) {
+                    // info objesini güncelle ve yeni imgUrl bilgisini ekle
+                    const newData = { ...info, imgUrl: downloadURL };
+                    await update(dbRef(db, `images/${info.id}`), newData);
+                    toastSuccessNotify('Updated');
+                    dispatch(fetchUploadEnd())
+                } else {
+                    toastWarnNotify('Not created image url link !');
+                    dispatch(fetchUploadEnd())
+                }
+            } else {
+                // Eğer updateFileName yoksa, sadece database bilgisini güncelle
+                await update(dbRef(db, `images/${info.id}`), info);
+                toastSuccessNotify('Updated');
+                dispatch(fetchUploadEnd())
+            }
+        } catch (error) {
+            // Hata yönetimi
+            console.error("updateImageData error: ", error);
+            toastErrorNotify('An error occurred!');
+            dispatch(fetchUploadEnd())
+        }
+
+
+    }
+
+
     //! realtime db tarafına yüklenin dosyanın url bilgisini ve info datasını çalıştıran fonksiyon
     const postDownloadUrlToRealTimeDb = async (newObj) => {
 
@@ -124,6 +178,7 @@ const useBonnaDesign = () => {
             throw error
         }
     }
+
 
 
     const getFile_and_Image_data = () => {
@@ -207,17 +262,17 @@ const useBonnaDesign = () => {
 
 
     //! realtime db den veri sil
-    const removeDesignData=async(id)=>{
+    const removeDesignData = async (id) => {
 
         try {
-            
+
             const db = getDatabase()
-            await remove(dbRef(db,`images/${id}`))
+            await remove(dbRef(db, `images/${id}`))
             toastSuccessNotify('Image data deleted')
 
         } catch (error) {
             toastErrorNotify('not deleted !')
-            console.log("removeDesignData: ",error)
+            console.log("removeDesignData: ", error)
         }
     }
 
@@ -230,7 +285,8 @@ const useBonnaDesign = () => {
         getFile_and_Image_data,
         getRealTime_dataFromDb,
         removeDesignFileData,
-        removeDesignData
+        removeDesignData,
+        updateImageData
     }
 
 

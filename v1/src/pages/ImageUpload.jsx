@@ -68,9 +68,10 @@ const ImageUpload = () => {
         if (file) {
             setFiles(file)
 
-            setInfo(prevInfo => ({
-                ...prevInfo, fileName: file.name
-            }))
+            // setInfo(prevInfo => ({
+            //     ...prevInfo, fileName: file.name
+            // }))
+            setInfo({...info, fileName: file.name})
         }
 
     }
@@ -139,6 +140,7 @@ const ImageUpload = () => {
                 <Container sx={{ display: 'flex', flexDirection: 'column', gap: 5, pb: 10 }} maxWidth={'md'} component={'form'} onSubmit={handleSave}>
 
                     <TextField
+                    required
                         fullWidth
                         type='text'
                         name='imageCode'
@@ -148,7 +150,6 @@ const ImageUpload = () => {
                         onChange={handleChangeInfo}
                     />
                     <TextField
-                        required
                         fullWidth
                         type='text'
                         name='collectionName'
@@ -171,7 +172,7 @@ const ImageUpload = () => {
                         type='text'
                         name='options'
                         id='options'
-                        label='Options'
+                        label='Application'
                         value={info.options}
                         onChange={handleChangeInfo}
                     />
@@ -229,7 +230,6 @@ const ImageUpload = () => {
 
 
                     <TextField
-                        required
                         fullWidth
                         type='text'
                         name='imageOwner'

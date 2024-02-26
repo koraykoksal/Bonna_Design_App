@@ -33,7 +33,7 @@ const Images = ({ searchData }) => {
                                 component="img"
                                 height="450"
                                 src={item.imgUrl}
-                                sx={{ borderRadius: '0.5rem', height: 'auto', backgroundColor: 'transparent', p: 2 }}
+                                sx={{ borderRadius: '1.2rem', height: 'auto', backgroundColor: 'transparent', p: 2 }}
                                 onClick={() => handleCardClick(item)}
                             />
 

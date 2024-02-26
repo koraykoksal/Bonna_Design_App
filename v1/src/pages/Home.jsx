@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux';
 export const Home = () => {
 
   const { getImageData } = useBonnaDesign()
-  const { designData, searchData } = useSelector((state) => state.bonnadesign)
+  const { searchData } = useSelector((state) => state.bonnadesign)
   const [info, setInfo] = useState({
     keywords: ""
   })
@@ -53,6 +53,8 @@ export const Home = () => {
     getImageData(newStr)
     return setInfo({ ...info, newStr })
   }
+
+
 
 
   return (

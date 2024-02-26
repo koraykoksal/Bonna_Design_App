@@ -18,7 +18,7 @@ const store=configureStore({
 
   reducer:{
     auth:persistedReducer,
-    bonnadesign:persistedDesignReducer,
+    bonnadesign:bonnaDesignReducer,
   }
 
   

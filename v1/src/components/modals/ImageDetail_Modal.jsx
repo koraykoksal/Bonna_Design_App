@@ -7,9 +7,19 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { useSelector } from 'react-redux';
 import { imageDetailModal } from '../../styles/globalStyle';
-
+import { useState,useEffect } from 'react';
 
 const ImageDetail_Modal = ({ open, handleClose, selectedData }) => {
+
+    const [imgLocation, setImgLocation] = useState("")
+
+    //imageCode ifadesine göre lokasyon bilgisini göster
+    useEffect(() => {  
+        const data = selectedData?.imageCode || ""
+        const info = data[0] == 'P' && 'Pazaryeri' || data[0] == 'B' && 'Çayırova' || 'Null'
+        setImgLocation(info)
+    }, [selectedData])
+    
 
     return (
         <div>
@@ -27,8 +37,8 @@ const ImageDetail_Modal = ({ open, handleClose, selectedData }) => {
 
                     <CardHeader
                         
-                        title={`Collection : ${selectedData?.collectionName}`}
-                        subheader={`Designer : ${selectedData?.imageOwner}`}
+                        title={`Image Code : ${selectedData?.imageCode}`}
+                        subheader={`Design Location : ${imgLocation}`}
                     />
                     <CardMedia
                         component="img"

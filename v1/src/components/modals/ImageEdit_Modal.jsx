@@ -8,24 +8,11 @@ import CardMedia from '@mui/material/CardMedia';
 import { useSelector } from 'react-redux';
 import { editModalStyle } from '../../styles/globalStyle';
 
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '75%',
-    height: '90%',
-    borderRadius: '5px',
-    boxShadow: 24,
-    p: 4,
-    // bgcolor: 'background.paper',
-    bgcolor: 'red',
-    overflow: 'auto'
-
-};
 
 
-const ImageEdit_Modal = ({ info, setInfo, editOpen, editHandleClose }) => {
+const ImageEdit_Modal = ({ info, editOpen, editHandleClose, handleChangeInfo, handleChangeFileName, handleImageKeyWordChange, handleUpdate }) => {
+
+    const { fileUpload_Loading } = useSelector((state) => state.bonnadesign)
 
     const {
         collectionName,
@@ -39,36 +26,6 @@ const ImageEdit_Modal = ({ info, setInfo, editOpen, editHandleClose }) => {
     } = info || {}
 
 
-    //?* türkçe karakterleri engelleyen fonksiyon
-    function turkishCharacterControl(chracter) {
-        return chracter.replace(/[çğşüöÇĞİŞÜÖ]/g, '')
-    }
-
-
-    //* string değerlerin bilgisini alan fonksiyon
-    const handleChangeInfo = (e) => {
-        const { value } = e.target
-        //?* TÜRKÇE KARAKTERLERİ TESPİT ET VE SİL
-        const index = turkishCharacterControl(value)
-
-        setInfo({ ...info, [e.target.name]: index.toUpperCase() })
-    }
-
-
-    //* dosya ismini alan fonksiyon
-    const handleChangeFileName = (e) => {
-
-        const file = e.target.files[0]
-
-        if (file) {
-            setFiles(file)
-
-            setInfo(prevInfo => ({
-                ...prevInfo, fileName: file.name
-            }))
-        }
-
-    }
 
 
     return (
@@ -87,7 +44,7 @@ const ImageEdit_Modal = ({ info, setInfo, editOpen, editHandleClose }) => {
                     <CloseIcon sx={{ float: 'right', color: '#C70039', fontSize: 28, mr: 1, '&:hover': { cursor: 'pointer', color: '#900C3F' } }} onClick={editHandleClose} />
 
 
-                    <Box display={'flex'} flexDirection={'column'} gap={3} alignItems={'center'} p={1}>
+                    <Box display={'flex'} flexDirection={'column'} gap={3} alignItems={'center'} p={1} component={'form'} onSubmit={(e) => handleUpdate(e)}>
 
                         <img
                             style={{ maxWidth: '200px', objectFit: 'contain', margin: 'auto', display: 'block', borderRadius: 3 }}
@@ -96,6 +53,7 @@ const ImageEdit_Modal = ({ info, setInfo, editOpen, editHandleClose }) => {
                         <Typography align='center'>{collectionName}</Typography>
 
                         <TextField
+                            required
                             fullWidth
                             type='text'
                             name='imageCode'
@@ -105,7 +63,6 @@ const ImageEdit_Modal = ({ info, setInfo, editOpen, editHandleClose }) => {
                             onChange={handleChangeInfo}
                         />
                         <TextField
-                            required
                             fullWidth
                             type='text'
                             name='collectionName'
@@ -134,21 +91,22 @@ const ImageEdit_Modal = ({ info, setInfo, editOpen, editHandleClose }) => {
                         />
 
 
-                        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3 }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, flexWrap: 'wrap' }}>
 
 
                             {
                                 Object.values(imageKeyWords)?.map((item, index) => (
                                     <TextField
                                         key={index}
-                                        required
+
                                         fullWidth
                                         type='text'
                                         name='imageKeyWords'
                                         id='imageKeyWords'
                                         label={'Key Word ' + index}
                                         value={item}
-                                    // onChange={handleImageKeyWordChange(0)}
+                                        sx={{ width: '245px' }}
+                                        onChange={handleImageKeyWordChange(index)}
                                     />
                                 ))
                             }
@@ -156,7 +114,6 @@ const ImageEdit_Modal = ({ info, setInfo, editOpen, editHandleClose }) => {
 
 
                         <TextField
-                            required
                             fullWidth
                             type='text'
                             name='imageOwner'
@@ -168,8 +125,7 @@ const ImageEdit_Modal = ({ info, setInfo, editOpen, editHandleClose }) => {
 
 
                         <TextField
-                        fullWidth
-                            required
+                            fullWidth
                             type='file'
                             name='fileName'
                             id='fileName'
@@ -181,7 +137,17 @@ const ImageEdit_Modal = ({ info, setInfo, editOpen, editHandleClose }) => {
 
                         />
 
-                        <Button fullWidth variant='contained' type='submit' sx={{ letterSpacing: 5, textTransform: 'none' }}>Update</Button>
+
+                        {
+                            fileUpload_Loading ?
+                                (
+                                    <Button className='loader' sx={{ margin: 'auto' }}></Button>
+                                )
+                                :
+                                (
+                                    <Button fullWidth variant='contained' type='submit' sx={{ letterSpacing: 5, textTransform: 'none' }}>Update</Button>
+                                )
+                        }
 
 
                     </Box>
