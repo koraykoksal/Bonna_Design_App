@@ -10,7 +10,7 @@ import ImageEdit_Modal from '../components/modals/ImageEdit_Modal'
 
 const Settings = () => {
 
-  const { getRealTime_dataFromDb,updateImageData } = useBonnaDesign()
+  const { getRealTime_dataFromDb, updateImageData } = useBonnaDesign()
   const { designData } = useSelector((state) => state.bonnadesign)
   const [files, setFiles] = useState("")
   const [info, setInfo] = useState({
@@ -74,12 +74,12 @@ const Settings = () => {
 
     if (file) {
       setFiles(file)
-      setInfo({...info, updateFileName: file.name || ""})
+      setInfo({ ...info, updateFileName: file.name || "" })
     }
     // setInfo(prevInfo => ({
     //   ...prevInfo, updateFileName: file.name
     // }))
-  
+
 
   }
 
@@ -95,11 +95,12 @@ const Settings = () => {
 
 
   const handleUpdate = (e) => {
-    console.log("update func. runn")
     e.preventDefault()
     updateImageData(files, info) //update fonksiyonu
     getRealTime_dataFromDb() //güncellenmiş datayı getir
-}
+  }
+
+
 
 
   return (
@@ -121,7 +122,7 @@ const Settings = () => {
 
         <DeleteModal delOpen={delOpen} delHandleClose={delHandleClose} info={info} />
 
-        <ImageEdit_Modal editOpen={editOpen} editHandleClose={editHandleClose} info={info} handleChangeInfo={handleChangeInfo} handleChangeFileName={handleChangeFileName} handleImageKeyWordChange={handleImageKeyWordChange} handleUpdate={handleUpdate}/>
+        <ImageEdit_Modal editOpen={editOpen} editHandleClose={editHandleClose} info={info} handleChangeInfo={handleChangeInfo} handleChangeFileName={handleChangeFileName} handleImageKeyWordChange={handleImageKeyWordChange} handleUpdate={handleUpdate} />
 
       </Box>
 

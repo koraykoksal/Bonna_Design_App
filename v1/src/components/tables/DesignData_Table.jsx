@@ -45,7 +45,7 @@ const DesignData_Table = ({ designData,info, setInfo, handleOpen, delHandleOpen,
         },
         {
             field: "options",
-            headerName: "Options",
+            headerName: "Application",
             minWidth: 100,
             headerAlign: "center",
             align: "center",
@@ -70,6 +70,14 @@ const DesignData_Table = ({ designData,info, setInfo, handleOpen, delHandleOpen,
             renderCell: (params) => (
                 <img loading='lazy' src={params.value} alt="" style={{ width: '85px', height: 'auto', objectFit: 'cover' }} />
             ),
+        },
+        {
+            field: "fileName",
+            headerName: "File Name ",
+            minWidth: 150,
+            headerAlign: "center",
+            align: "center",
+            flex: 1,
         },
         {
             field: "imageOwner",

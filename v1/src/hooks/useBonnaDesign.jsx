@@ -62,6 +62,8 @@ const useBonnaDesign = () => {
     //! bu fonksiyon storage de bulunan resim dosyasını siler daha sonra yeni resim dosyasını yükler
     const updateImageData = async (files, info) => {
 
+        console.log("info: ",info)
+
         dispatch(fetchUploadStart())
 
         const storage = getStorage();   //storage bilgisini çek
@@ -88,7 +90,9 @@ const useBonnaDesign = () => {
 
                 if (downloadURL) {
                     // info objesini güncelle ve yeni imgUrl bilgisini ekle
-                    const newData = { ...info, imgUrl: downloadURL };
+                    const newData = { ...info, imgUrl: downloadURL,fileName: info?.updateFileName};
+
+                    console.log("newData: ",newData)
                     await update(dbRef(db, `images/${info.id}`), newData);
                     toastSuccessNotify('Updated');
                     dispatch(fetchUploadEnd())
