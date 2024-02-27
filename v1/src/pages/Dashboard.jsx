@@ -50,6 +50,10 @@ function Dashboard() {
             title: 'Settings',
             url: '/bonnadesign/settings'
         },
+        {
+            title: 'Users',
+            url: '/bonnadesign/users'
+        },
         
     ]
 

@@ -71,7 +71,12 @@ export const editModalStyle = {
     borderRadius: '5px',
     boxShadow: 24,
     p: 4,
-    overflow: 'auto'
+    overflow: 'auto',
 }
 
 
+export const usersPageButton = {
+    textTransform: 'none',
+    letterSpacing: 3,
+    width: 200
+}

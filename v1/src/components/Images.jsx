@@ -25,7 +25,7 @@ const Images = ({ searchData }) => {
                 {
                     searchData?.map((item, id) => (
 
-                        <CardActionArea key={id} style={{ maxWidth: 500, margin: "auto", marginTop: "3.5rem", marginBottom: "3.5rem" }}>
+                        <CardActionArea key={id} style={{ maxWidth: 400, margin: "auto", marginTop: "3.5rem", marginBottom: "3.5rem" }}>
 
 
                             <CardMedia

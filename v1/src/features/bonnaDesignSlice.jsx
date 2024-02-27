@@ -6,8 +6,8 @@ const initialState = {
     fileUpload_Loading: false,
     loading: false,
     error: false,
-    searchData:[],
-    designData:[],
+    searchData: [],
+    designData: [],
 }
 
 
@@ -19,31 +19,35 @@ const bonnaDesignSlice = createSlice({
     initialState,
 
     reducers: {
+        fetchStart: (state) => {
+            state.loading = true
+            state.error = false
+        },
+        fetchEnd: (state) => {
+            state.loading = false
+            state.error = false
+        },
         fetchUploadStart: (state) => {
             state.fileUpload_Loading = true
             state.error = false
-
         },
         fetchUploadEnd: (state) => {
             state.fileUpload_Loading = false
             state.error = false
-
         },
         fetchSearchStart: (state) => {
             state.loading = true
             state.error = false
-            state.designData=[]
-
+            state.designData = []
         },
         fetchSearchEnd: (state) => {
             state.loading = false
             state.error = false
-
         },
-        fetchSearchData:(state,{payload})=>{
+        fetchSearchData: (state, { payload }) => {
             state.searchData = payload
         },
-        fetchDesignData:(state,{payload})=>{
+        fetchDesignData: (state, { payload }) => {
             state.designData = payload
         },
         fetchFail: (state) => {
@@ -55,7 +59,8 @@ const bonnaDesignSlice = createSlice({
 })
 
 export const {
-
+    fetchStart,
+    fetchEnd,
     fetchUploadStart,
     fetchUploadEnd,
     fetchSearchStart,
