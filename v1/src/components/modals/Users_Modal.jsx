@@ -11,7 +11,7 @@ import { FaUser } from "react-icons/fa";
 import Switch from '@mui/material/Switch';
 
 
-const Users_Modal = ({ open, handleClose, info, setInfo, handleChange }) => {
+const Users_Modal = ({ open, handleClose, info, setInfo, handleChange, handleSubmit }) => {
 
 
     const { bonnadesign } = useSelector((state) => state.bonnadesign)
@@ -71,7 +71,7 @@ const Users_Modal = ({ open, handleClose, info, setInfo, handleChange }) => {
                     </Box>
 
 
-                    <Box display={'flex'} flexDirection={'column'} alignItems={'center'} flexWrap={'wrap'} gap={5} p={3}>
+                    <Box display={'flex'} flexDirection={'column'} alignItems={'center'} flexWrap={'wrap'} gap={5} p={3} component={'form'} onSubmit={handleSubmit}>
 
                         <Grid display={'flex'} justifyContent={'center'} gap={5} alignItems={'center'} flexWrap={'wrap'}>
 
@@ -153,10 +153,6 @@ const Users_Modal = ({ open, handleClose, info, setInfo, handleChange }) => {
                                     <Button variant='outlined' type='submit' sx={{ letterSpacing: 5, textTransform: 'none', width: '200px' }}>Add</Button>
                                 )
                         }
-
-
-
-
 
                     </Box>
 

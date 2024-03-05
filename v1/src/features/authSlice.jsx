@@ -28,10 +28,10 @@ const authSlice=createSlice({
             state.error=true;
         },
         fetchLoginSuccess:(state,{payload})=>{
-            console.log(payload)
             state.loading=false;
-            state.currentUser=payload[0]?.NAME+" "+payload[0]?.SURNAME
-            state.userInfo = payload[0]
+            state.token = payload?.token
+            state.currentUser=payload?.user?.name+" "+payload?.user?.surname
+            state.userInfo = payload
         
         },
         fetchLogoutSuccess:(state)=>{

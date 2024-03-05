@@ -39,10 +39,10 @@ function Dashboard() {
             title: 'Home',
             url: '/bonnadesign/'
         },
-        {
-            title: 'Upload',
-            url: '/bonnadesign/imageupload'
-        },
+        // {
+        //     title: 'Upload',
+        //     url: '/bonnadesign/imageupload'
+        // },
     ];
 
     const settings = [
@@ -54,7 +54,7 @@ function Dashboard() {
             title: 'Users',
             url: '/bonnadesign/users'
         },
-        
+
     ]
 
 
@@ -79,7 +79,7 @@ function Dashboard() {
 
     //avatarın name bilgisi
     const avatarNick = () => {
-    
+
         const name = currentUser[0]
         const boslukIndex = currentUser.indexOf(" ")
         const surname = currentUser[boslukIndex + 1]
@@ -140,6 +140,18 @@ function Dashboard() {
                                         <Typography textAlign="center" sx={{ textTransform: 'none' }}>{item.title}</Typography>
                                     </MenuItem>
                                 ))}
+
+                                {/* KULLANICI ADMIN İSE */}
+                                {
+                                    userInfo?.user?.isAdmin && <MenuItem onClick={() => {
+                                        handleCloseNavMenu()
+                                        navi('/bonnadesign/imageupload')
+                                    }}>
+                                        <Typography textAlign="center" sx={{ textTransform: 'none' }}>Upload</Typography>
+                                    </MenuItem>
+
+                                }
+
                             </Menu>
 
                         </Box>
@@ -156,6 +168,18 @@ function Dashboard() {
                                     {item.title}
                                 </Button>
                             ))}
+
+                            {/* KULLANICI ADMIN İSE */}
+                            {
+                                userInfo?.user?.isAdmin && <Button
+
+                                    onClick={() => navi('/bonnadesign/imageupload')}
+                                    sx={{ my: 2, color: 'white', display: 'block', textTransform: 'none' }}
+                                >
+                                    Upload
+                                </Button>
+
+                            }
                         </Box>
 
 
@@ -166,7 +190,7 @@ function Dashboard() {
 
                             <Box>
 
-                                <Avatar onClick={handleOpenUserMenu} sx={{ cursor: 'pointer',backgroundColor:'green' }} >{avatarNick()}</Avatar>
+                                <Avatar onClick={handleOpenUserMenu} sx={{ cursor: 'pointer', backgroundColor: 'green' }} >{avatarNick()}</Avatar>
 
                                 <Menu
                                     sx={{ mt: '45px' }}
@@ -187,7 +211,7 @@ function Dashboard() {
                                     <Box onClick={handleCloseUserMenu} s sx={{ display: 'flex', flexDirection: 'column' }}>
 
                                         {
-                                            userInfo.ADMIN === '1' ? (
+                                            userInfo?.user?.isAdmin || userInfo?.user?.isController ? (
 
 
                                                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>

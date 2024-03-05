@@ -17,7 +17,7 @@ export const Login = () => {
 
 
   const [info, setInfo] = useState({
-    username: "",
+    email: "",
     password: ""
   })
 
@@ -37,7 +37,7 @@ export const Login = () => {
     // signIn(info)
 
     setInfo({
-      username: "",
+      email: "",
       password: ""
     })
   }
@@ -84,12 +84,12 @@ export const Login = () => {
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }} component='form' onSubmit={handleSubmit}>
               <TextField
                 required
-                label="Username"
-                name="username"
-                id="username"
-                type="username"
+                label="Email"
+                name="email"
+                id="email"
+                type="email"
                 variant="outlined"
-                value={info.username}
+                value={info.email}
                 onChange={handleChange}
                 inputProps={{
                   style: { color: 'black' }

@@ -23,17 +23,16 @@ const useAuthCall = () => {
 
 
     //! erp login
-    const login = async ({ username, password }) => {
+    const login = async ({ email, password }) => {
 
         dispatch(fetchStart())
 
         const options = {
             method: 'POST',
-            url: `${import.meta.env.VITE_ERP_LOGIN_BASE_URL}`,
-            headers: {
-                'USERNM': username,
-                'PASS': password,
-                'APIKEY': `${import.meta.env.VITE_ERP_API_KEY}`
+            url: `${import.meta.env.VITE_LOGIN_BASE_URL}/auth/login`,
+            data: {
+                'email': email,
+                'password': password,
 
             }
         }
@@ -42,7 +41,7 @@ const useAuthCall = () => {
 
             const res = await axios(options)
 
-            if (res?.data[0].STATUS == "1") {
+            if (res?.status == 200) {
 
                 dispatch(fetchLoginSuccess(res?.data))
                 navigate('/bonnadesign')

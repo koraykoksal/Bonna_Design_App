@@ -7,8 +7,6 @@ import Users_Modal from '../components/modals/Users_Modal'
 const Users = () => {
 
 
-
-
     const [info, setInfo] = useState({
         name:"",
         surname:"",
@@ -25,12 +23,18 @@ const Users = () => {
         setOpen(false)
     }
 
-
-
     const handleChange=(e)=>{
         const {name,value} = e.target
         setInfo({...info,[name]:value})
     }
+
+    
+    const handleSubmit=(e)=>{
+        e.preventDefault()
+
+    }
+
+
 
     return (
         <div>
@@ -42,7 +46,7 @@ const Users = () => {
                 <Button variant='outlined' sx={usersPageButton} onClick={handleOpen}>Add User</Button>
             </Box>
 
-            <Users_Modal open={open} handleClose={handleClose} info={info} setInfo={setInfo} handleChange={handleChange}/>
+            <Users_Modal open={open} handleClose={handleClose} info={info} setInfo={setInfo} handleChange={handleChange} handleSubmit={handleSubmit}/>
 
         </div>
     )

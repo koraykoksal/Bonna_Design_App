@@ -77,6 +77,5 @@ export const editModalStyle = {
 
 export const usersPageButton = {
     textTransform: 'none',
-    letterSpacing: 3,
-    width: 200
+    width: 100
 }
