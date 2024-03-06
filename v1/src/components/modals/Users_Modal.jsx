@@ -1,20 +1,24 @@
 import React, { useState } from 'react'
 import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
-import { Box, Button, CardActionArea, CardHeader, Container, FormControl, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
+import { Box, Button, CardActionArea, CardHeader, Container, FormControl, FormControlLabel, Grid, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { useSelector } from 'react-redux';
 import { editModalStyle } from '../../styles/globalStyle';
-import { FaUser } from "react-icons/fa";
+import { LuUserPlus } from "react-icons/lu";
+import { LuUserCog } from "react-icons/lu";
+import { IoMdEye } from "react-icons/io";
+import { IoIosEyeOff } from "react-icons/io";
+
 import Switch from '@mui/material/Switch';
 
 
 const Users_Modal = ({ open, handleClose, info, setInfo, handleChange, handleSubmit }) => {
 
 
-    const { bonnadesign } = useSelector((state) => state.bonnadesign)
+    const [showPassword, setShowPassword] = useState(false);
 
     const [checkInfo, setcheckInfo] = useState({
         admin: false,
@@ -22,16 +26,22 @@ const Users_Modal = ({ open, handleClose, info, setInfo, handleChange, handleSub
     })
 
 
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
+
     const handleIsCheck = (e, param) => {
 
         const { checked } = e.target
 
         if (param == 'admin') {
-            setcheckInfo({ ...checkInfo, admin: checked, controller: false })
+            setcheckInfo({ ...checkInfo, admin: checked })
             setInfo(prev => ({ ...prev, isAdmin: checked, isController: false }))
         }
         else if (param == 'controller') {
-            setcheckInfo({ ...checkInfo, admin: false, controller: checked })
+            setcheckInfo({ ...checkInfo, controller: checked })
             setInfo(prev => ({ ...prev, isAdmin: false, isController: checked }))
         }
     }
@@ -45,6 +55,7 @@ const Users_Modal = ({ open, handleClose, info, setInfo, handleChange, handleSub
     }
 
 
+    console.log(info)
 
     return (
         <div>
@@ -58,15 +69,23 @@ const Users_Modal = ({ open, handleClose, info, setInfo, handleChange, handleSub
                 <Box sx={editModalStyle}>
 
                     <Box display={'flex'} flexDirection={'column'} gap={1}>
+
                         <CloseIcon sx={{ float: 'right', color: '#C70039', fontSize: 28, mr: 1, '&:hover': { cursor: 'pointer', color: '#900C3F' } }} onClick={handleClose} />
 
 
 
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
-                            <FaUser size={25} />
 
-                            <Typography variant='subtitle1' align='center' p={1} fontFamily={'Catamaran'} fontWeight={700}>New User</Typography>
+                            {
+                                info.id ? <LuUserCog size={40} /> : <LuUserPlus size={40} />
+                            }
+
+                            <Typography variant='subtitle1' align='center' p={1} fontFamily={'Catamaran'} >
+                                {
+                                    info.id ? 'Update User' : 'New User'
+                                }
+                            </Typography>
                         </Box>
                     </Box>
 
@@ -102,12 +121,25 @@ const Users_Modal = ({ open, handleClose, info, setInfo, handleChange, handleSub
                             <TextField
                                 required
                                 fullWidth
-                                type='text'
+                                type={showPassword ? 'password' : 'text'}
                                 name='password'
                                 id='password'
                                 label='Password'
                                 value={info?.password}
                                 onChange={handleChange}
+
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                onClick={togglePasswordVisibility}
+                                                edge="end"
+                                            >
+                                                {showPassword ? <IoIosEyeOff /> : <IoMdEye />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    )
+                                }}
                             />
                             <TextField
                                 required
@@ -124,7 +156,8 @@ const Users_Modal = ({ open, handleClose, info, setInfo, handleChange, handleSub
                         <Grid display={'flex'} justifyContent={'center'} gap={5} alignItems={'center'} flexWrap={'wrap'}>
                             <FormControlLabel
                                 control={<Switch
-                                    checked={checkInfo.admin}
+                                    // checked={checkInfo.admin}
+                                    checked={info.id ? info.isAdmin : checkInfo.admin}
                                     name='admin'
                                     onChange={(e) => handleIsCheck(e, 'admin')}
                                 />
@@ -132,7 +165,8 @@ const Users_Modal = ({ open, handleClose, info, setInfo, handleChange, handleSub
                             />
                             <FormControlLabel
                                 control={<Switch
-                                    checked={checkInfo.controller}
+                                    // checked={checkInfo.controller}
+                                    checked={info.id ? info.isController : checkInfo.controller}
                                     name='controller'
                                     onChange={(e) => handleIsCheck(e, 'controller')}
                                 />
@@ -142,17 +176,12 @@ const Users_Modal = ({ open, handleClose, info, setInfo, handleChange, handleSub
                         </Grid>
 
 
+                        <Button variant='contained' type='submit' sx={{ letterSpacing: 5, textTransform: 'none', width: '200px' }}>
+                            {
+                                info.id ? 'Update' : 'Add'
+                            }
+                        </Button>
 
-                        {
-                            bonnadesign ?
-                                (
-                                    <Button className='loader' sx={{ margin: 'auto' }}></Button>
-                                )
-                                :
-                                (
-                                    <Button variant='outlined' type='submit' sx={{ letterSpacing: 5, textTransform: 'none', width: '200px' }}>Add</Button>
-                                )
-                        }
 
                     </Box>
 

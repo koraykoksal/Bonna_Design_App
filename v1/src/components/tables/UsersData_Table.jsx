@@ -82,9 +82,15 @@ const UsersData_Table = ({ users, handleOpen, info, setInfo, delHandleOpen, edit
                         icon={<MdEdit size={25} style={{ color: '#FAA300' }} cursor='pointer' />}
                         label="Edit"
                         onClick={() => {
-                            editHandleOpen()
+                            handleOpen()
                             setInfo({
                                 id,
+                                name,
+                                surname,
+                                password,
+                                isAdmin,
+                                isController,
+                                email,
                             })
                         }}
 
@@ -103,6 +109,7 @@ const UsersData_Table = ({ users, handleOpen, info, setInfo, delHandleOpen, edit
                                 isAdmin,
                                 isController,
                                 email,
+                                type: "users"
                             })
                         }}
 
@@ -120,7 +127,7 @@ const UsersData_Table = ({ users, handleOpen, info, setInfo, delHandleOpen, edit
                 <DataGrid
                     columns={dataGrid_Columns}
                     rows={users}
-                    getRowId={(row)=>row._id}
+                    getRowId={(row) => row._id}
                     initialState={{
                         pagination: {
                             paginationModel: {

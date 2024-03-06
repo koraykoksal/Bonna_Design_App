@@ -27,14 +27,17 @@ const DeleteModal = ({ delHandleClose, delOpen, info }) => {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        if (info.id) {
+        if (info.id && info.type=='images') {
             removeDesignFileData(info.fileName) // storage den sil
             removeDesignData(info.id)   // realtime db den sil
             getRealTime_dataFromDb()    // güncel datayı çek
         }
+        else if(info.id && info.type=='users'){
+
+        }
+        
         delHandleClose()
     }
-
 
     return (
         <div>

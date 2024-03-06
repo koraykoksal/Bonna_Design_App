@@ -168,6 +168,7 @@ const DesignData_Table = ({ designData,info, setInfo, handleOpen, delHandleOpen,
                                 createMonth,
                                 createTime,
                                 createYear,
+                                type:"images"
                             })
                         }}
 

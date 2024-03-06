@@ -29,7 +29,18 @@ const Users = () => {
 
     const [open, setOpen] = useState(false)
     const handleOpen = () => setOpen(true);
-    const handleClose = () => { setOpen(false) }
+    const handleClose = () => {
+        setOpen(false)
+        setInfo({
+            id: "",
+            name: "",
+            surname: "",
+            password: "",
+            isAdmin: false,
+            isController: false,
+            email: "",
+        })
+    }
 
     const [delOpen, setdelOpen] = React.useState(false);
     const delHandleOpen = () => setdelOpen(true);
@@ -87,6 +98,7 @@ const Users = () => {
                             <DeleteModal delOpen={delOpen} delHandleClose={delHandleClose} info={info} />
 
                             <Users_Modal open={open} handleClose={handleClose} info={info} setInfo={setInfo} handleChange={handleChange} handleSubmit={handleSubmit} />
+
 
                         </Box>
                     )

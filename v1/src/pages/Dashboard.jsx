@@ -183,7 +183,6 @@ function Dashboard() {
                         </Box>
 
 
-
                         <Box sx={{ flexGrow: 0, display: 'flex', justifyContent: 'center', gap: 1, alignItems: 'center' }}>
 
                             <Typography>{currentUser && currentUser}</Typography>
@@ -226,11 +225,11 @@ function Dashboard() {
                                         } */}
 
                                         {
-                                             userInfo?.user?.isAdmin || userInfo?.user?.isController && <Button  sx={{ color: '#000000', textTransform: 'none' }} onClick={() => navi('/bonnadesign/settings')}>Settings</Button>
+                                            (userInfo?.user?.isAdmin || userInfo?.user?.isController) && <Button sx={{ color: '#000000', textTransform: 'none' }} onClick={() => navi('/bonnadesign/settings')}>Settings</Button>
                                         }
 
                                         {
-                                             userInfo?.user?.isAdmin && <Button  sx={{ color: '#000000', textTransform: 'none' }} onClick={() => navi('/bonnadesign/users')}>Users</Button>
+                                            userInfo?.user?.isAdmin && <Button sx={{ color: '#000000', textTransform: 'none' }} onClick={() => navi('/bonnadesign/users')}>Users</Button>
                                         }
 
                                         <Button sx={{ color: '#C70039', fontWeight: '700', textTransform: 'none' }} onClick={() => logout()}>Out</Button>
