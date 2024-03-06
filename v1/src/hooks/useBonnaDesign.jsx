@@ -14,7 +14,7 @@ const useBonnaDesign = () => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const {token} = useSelector((state)=>state.auth)
+    const { token } = useSelector((state) => state.auth)
 
     //! dosyayı storage tarafına yükle
     const postImageDataToFirebase = async (files, info) => {
@@ -62,7 +62,7 @@ const useBonnaDesign = () => {
     //! bu fonksiyon storage de bulunan resim dosyasını siler daha sonra yeni resim dosyasını yükler
     const updateImageData = async (files, info) => {
 
-        console.log("info: ",info)
+        console.log("info: ", info)
 
         dispatch(fetchUploadStart())
 
@@ -90,9 +90,9 @@ const useBonnaDesign = () => {
 
                 if (downloadURL) {
                     // info objesini güncelle ve yeni imgUrl bilgisini ekle
-                    const newData = { ...info, imgUrl: downloadURL,fileName: info?.updateFileName};
+                    const newData = { ...info, imgUrl: downloadURL, fileName: info?.updateFileName };
 
-                    console.log("newData: ",newData)
+                    console.log("newData: ", newData)
                     await update(dbRef(db, `images/${info.id}`), newData);
                     toastSuccessNotify('Updated');
                     dispatch(fetchUploadEnd())
@@ -282,15 +282,15 @@ const useBonnaDesign = () => {
 
 
 
-    const getUsers=async (address)=>{
+    const getUsers = async (address) => {
 
         try {
-            
-            const config={
-                method:'get',
-                url:`${import.meta.env.VITE_API_BASE_URL}/${address}`,
-                headers:{
-                    'Authorization':`Bearer ${token}`,
+
+            const config = {
+                method: 'get',
+                url: `${import.meta.env.VITE_API_BASE_URL}/${address}`,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             }
@@ -300,10 +300,37 @@ const useBonnaDesign = () => {
             dispatch(fetchUsersData(res?.data?.data))
 
         } catch (error) {
-            console.log("getUsers error: ",error)
+            console.log("getUsers error: ", error)
         }
     }
 
+
+    const putUsers = async (address, info) => {
+
+        try {
+
+            const config = {
+                method: 'put',
+                url: `${import.meta.env.VITE_API_BASE_URL}/${address}/${info.id}`,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                data: JSON.stringify(info)
+            }
+
+            const res = await axios(config)
+
+            res.status == 202 ? toastSuccessNotify('Updated') : toastErrorNotify('Not Updated !')
+
+            //* güncel kullanıcı bilgisini çek
+            getUsers('users')
+
+
+        } catch (error) {
+            console.log("putUsers: ", error)
+        }
+    }
 
 
 
@@ -316,7 +343,8 @@ const useBonnaDesign = () => {
         removeDesignFileData,
         removeDesignData,
         updateImageData,
-        getUsers
+        getUsers,
+        putUsers
     }
 
 

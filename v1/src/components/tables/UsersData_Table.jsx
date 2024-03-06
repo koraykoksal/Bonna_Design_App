@@ -70,7 +70,6 @@ const UsersData_Table = ({ users, handleOpen, info, setInfo, delHandleOpen, edit
                 row: {
                     name,
                     surname,
-                    password,
                     isAdmin,
                     isController,
                     email,
@@ -87,7 +86,6 @@ const UsersData_Table = ({ users, handleOpen, info, setInfo, delHandleOpen, edit
                                 id,
                                 name,
                                 surname,
-                                password,
                                 isAdmin,
                                 isController,
                                 email,
@@ -105,7 +103,6 @@ const UsersData_Table = ({ users, handleOpen, info, setInfo, delHandleOpen, edit
                                 id,
                                 name,
                                 surname,
-                                password,
                                 isAdmin,
                                 isController,
                                 email,

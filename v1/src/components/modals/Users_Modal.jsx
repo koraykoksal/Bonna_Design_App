@@ -25,8 +25,6 @@ const Users_Modal = ({ open, handleClose, info, setInfo, handleChange, handleSub
         controller: false
     })
 
-
-
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
@@ -38,11 +36,11 @@ const Users_Modal = ({ open, handleClose, info, setInfo, handleChange, handleSub
 
         if (param == 'admin') {
             setcheckInfo({ ...checkInfo, admin: checked })
-            setInfo(prev => ({ ...prev, isAdmin: checked, isController: false }))
+            setInfo(prev => ({ ...prev, isAdmin: checked }))
         }
         else if (param == 'controller') {
             setcheckInfo({ ...checkInfo, controller: checked })
-            setInfo(prev => ({ ...prev, isAdmin: false, isController: checked }))
+            setInfo(prev => ({ ...prev, isController: checked }))
         }
     }
 
@@ -54,8 +52,7 @@ const Users_Modal = ({ open, handleClose, info, setInfo, handleChange, handleSub
         setInfo({ ...info, isAdmin: false, isController: false })
     }
 
-
-    console.log(info)
+    
 
     return (
         <div>
@@ -81,7 +78,7 @@ const Users_Modal = ({ open, handleClose, info, setInfo, handleChange, handleSub
                                 info.id ? <LuUserCog size={40} /> : <LuUserPlus size={40} />
                             }
 
-                            <Typography variant='subtitle1' align='center' p={1} fontFamily={'Catamaran'} >
+                            <Typography variant='subtitle1' letterSpacing={5} align='center' p={1} fontFamily={'Catamaran'} >
                                 {
                                     info.id ? 'Update User' : 'New User'
                                 }
@@ -119,7 +116,7 @@ const Users_Modal = ({ open, handleClose, info, setInfo, handleChange, handleSub
 
                         <Grid display={'flex'} justifyContent={'center'} gap={5} alignItems={'center'} flexWrap={'wrap'}>
                             <TextField
-                                required
+                                
                                 fullWidth
                                 type={showPassword ? 'password' : 'text'}
                                 name='password'
@@ -172,7 +169,9 @@ const Users_Modal = ({ open, handleClose, info, setInfo, handleChange, handleSub
                                 />
                                 } label="Controller"
                             />
-                            <Button variant='contained' size='small' sx={{ textTransform: 'none' }} onClick={handleReset}>Reset</Button>
+                            <Button variant='contained' size='small' sx={{ textTransform: 'none' }} onClick={handleReset}>
+                                Reset
+                            </Button>
                         </Grid>
 
 

@@ -12,7 +12,7 @@ import { NotFound } from './NotFound'
 
 const Users = () => {
 
-    const { getUsers } = useBonnaDesign()
+    const { getUsers,putUsers } = useBonnaDesign()
     const { users } = useSelector((state) => state.bonnadesign)
     const { userInfo } = useSelector((state) => state.auth)
     const navigate = useNavigate()
@@ -58,7 +58,11 @@ const Users = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-
+        if(info?.id){
+            putUsers('users',info)
+            handleClose()
+        }
+  
     }
 
 
@@ -67,6 +71,7 @@ const Users = () => {
     }, [])
 
 
+    
 
     return (
 
@@ -77,7 +82,7 @@ const Users = () => {
                     (
                         <Box display={'flex'} flexDirection={'column'} gap={3} p={3}>
 
-                            <Box display={'flex'} flexDirection={'column'} gap={3} p={3}>
+                            <Box display={'flex'} flexDirection={'column'} gap={3}>
 
                                 <Typography color={'#000000'} align='center' mt={10} letterSpacing={5}>Users</Typography>
 
