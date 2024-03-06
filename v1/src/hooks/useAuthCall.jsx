@@ -29,7 +29,7 @@ const useAuthCall = () => {
 
         const options = {
             method: 'POST',
-            url: `${import.meta.env.VITE_LOGIN_BASE_URL}/auth/login`,
+            url: `${import.meta.env.VITE_API_BASE_URL}/auth/login`,
             data: {
                 'email': email,
                 'password': password,

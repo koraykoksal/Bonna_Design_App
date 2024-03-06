@@ -8,6 +8,7 @@ const initialState = {
     error: false,
     searchData: [],
     designData: [],
+    users:[]
 }
 
 
@@ -50,6 +51,9 @@ const bonnaDesignSlice = createSlice({
         fetchDesignData: (state, { payload }) => {
             state.designData = payload
         },
+        fetchUsersData:(state,{payload})=>{
+            state.users=payload
+        },
         fetchFail: (state) => {
             state.loading = false
             state.error = true
@@ -67,7 +71,8 @@ export const {
     fetchSearchEnd,
     fetchFail,
     fetchDesignData,
-    fetchSearchData
+    fetchSearchData,
+    fetchUsersData
 
 } = bonnaDesignSlice.actions
 

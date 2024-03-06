@@ -5,17 +5,18 @@ import { uploadPageBgStyle } from '../styles/globalStyle';
 import { useSelector } from 'react-redux';
 import useBonnaDesign from '../hooks/useBonnaDesign';
 import { toastWarnNotify } from '../helper/ToastNotify';
+import { NotFound } from './NotFound';
+import { useNavigate } from 'react-router-dom';
 
 
 const ImageUpload = () => {
 
-    const { currentUser } = useSelector((state) => state.auth)
+    const { currentUser,userInfo } = useSelector((state) => state.auth)
     const { fileUpload_Loading } = useSelector((state) => state.bonnadesign)
 
     const { postImageDataToFirebase } = useBonnaDesign()
     const [files, setFiles] = useState("")
     const [info, setInfo] = useState({
-
         imageCode: "",
         collectionName: "",
         designName: "",
@@ -28,9 +29,9 @@ const ImageUpload = () => {
         createMonth: new Date().getMonth() + 1,
         createDate: new Date().getDate(),
         createTime: new Date().getHours() + ":" + new Date().getMinutes()
-
     })
 
+    const navigate = useNavigate()
 
     //?* türkçe karakterleri engelleyen fonksiyon
     function turkishCharacterControl(chracter) {
@@ -127,12 +128,13 @@ const ImageUpload = () => {
     }
 
 
-  
-
     return (
         <div style={uploadPageBgStyle}>
 
-            <Box sx={{ display: 'flex', flexDirection: 'column', p:3, gap: 5 }}>
+            {
+                userInfo?.user?.isController ?
+                (
+                    <Box sx={{ display: 'flex', flexDirection: 'column', p:3, gap: 5 }}>
 
                 <Typography align='center' color={'#000000'} letterSpacing={5} fontFamily={'Calibri'} mt={10}>Upload Image</Typography>
 
@@ -290,6 +292,14 @@ const ImageUpload = () => {
                 </Container>
 
             </Box>
+                )
+                :
+                (
+                    <NotFound/>
+                )
+            }
+
+            
         </div>
     )
 }

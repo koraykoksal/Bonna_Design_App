@@ -6,12 +6,15 @@ import { useSelector } from 'react-redux'
 import DesignData_Table from '../components/tables/DesignData_Table'
 import DeleteModal from '../components/delete/DeleteModal'
 import ImageEdit_Modal from '../components/modals/ImageEdit_Modal'
+import { useNavigate } from 'react-router-dom'
+import { NotFound } from './NotFound'
 
 
 const Settings = () => {
 
   const { getRealTime_dataFromDb, updateImageData } = useBonnaDesign()
   const { designData } = useSelector((state) => state.bonnadesign)
+  const {userInfo} = useSelector((state)=>state.auth)
   const [files, setFiles] = useState("")
   const [info, setInfo] = useState({
     id: "",
@@ -29,6 +32,8 @@ const Settings = () => {
     createTime: "",
     createYear: "",
   })
+
+  const navigate = useNavigate()
 
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true);
@@ -101,30 +106,36 @@ const Settings = () => {
   }
 
 
-
-
   return (
     <div>
 
+    {
+      userInfo?.user?.isAdmin || userInfo?.user?.isController ? 
 
-      <Box display={'flex'} flexDirection={'column'} gap={3} p={3}>
+      (<Box display={'flex'} flexDirection={'column'} gap={3} p={3}>
 
-        <Typography color={'#000000'} align='center' mt={10} letterSpacing={5}>Settings</Typography>
+      <Typography color={'#000000'} align='center' mt={10} letterSpacing={5}>Settings</Typography>
 
-        <DesignData_Table
-          designData={designData}
-          handleOpen={handleOpen}
-          delHandleOpen={delHandleOpen}
-          editHandleOpen={editHandleOpen}
-          info={info}
-          setInfo={setInfo}
-        />
+      <DesignData_Table
+        designData={designData}
+        handleOpen={handleOpen}
+        delHandleOpen={delHandleOpen}
+        editHandleOpen={editHandleOpen}
+        info={info}
+        setInfo={setInfo}
+      />
 
-        <DeleteModal delOpen={delOpen} delHandleClose={delHandleClose} info={info} />
+      <DeleteModal delOpen={delOpen} delHandleClose={delHandleClose} info={info} />
 
-        <ImageEdit_Modal editOpen={editOpen} editHandleClose={editHandleClose} info={info} handleChangeInfo={handleChangeInfo} handleChangeFileName={handleChangeFileName} handleImageKeyWordChange={handleImageKeyWordChange} handleUpdate={handleUpdate} />
+      <ImageEdit_Modal editOpen={editOpen} editHandleClose={editHandleClose} info={info} handleChangeInfo={handleChangeInfo} handleChangeFileName={handleChangeFileName} handleImageKeyWordChange={handleImageKeyWordChange} handleUpdate={handleUpdate} />
 
-      </Box>
+    </Box>)
+      :
+      (
+        <NotFound/>
+      )
+    }
+      
 
     </div>
   )

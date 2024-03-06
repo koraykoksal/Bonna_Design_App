@@ -1,12 +1,12 @@
 import axios from "axios";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getStorage, ref, uploadBytes, getDownloadURL, getMetadata, listAll, list, deleteObject } from "firebase/storage";
 import { getDatabase, onValue, remove, set, update, ref as dbRef } from "firebase/database"
 import { getFirestore, setDoc, doc } from "firebase/firestore";
 import { uid } from "uid"
 import { toastSuccessNotify, toastErrorNotify, toastWarnNotify } from "../helper/ToastNotify"
-import { fetchDesignData, fetchFail, fetchSearchData, fetchSearchEnd, fetchSearchStart, fetchUploadEnd, fetchUploadStart } from "../features/bonnaDesignSlice";
+import { fetchDesignData, fetchFail, fetchSearchData, fetchSearchEnd, fetchSearchStart, fetchUploadEnd, fetchUploadStart, fetchUsersData } from "../features/bonnaDesignSlice";
 
 
 const useBonnaDesign = () => {
@@ -14,7 +14,7 @@ const useBonnaDesign = () => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
+    const {token} = useSelector((state)=>state.auth)
 
     //! dosyayı storage tarafına yükle
     const postImageDataToFirebase = async (files, info) => {
@@ -282,6 +282,31 @@ const useBonnaDesign = () => {
 
 
 
+    const getUsers=async (address)=>{
+
+        try {
+            
+            const config={
+                method:'get',
+                url:`${import.meta.env.VITE_API_BASE_URL}/${address}`,
+                headers:{
+                    'Authorization':`Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+
+            const res = await axios(config)
+
+            dispatch(fetchUsersData(res?.data?.data))
+
+        } catch (error) {
+            console.log("getUsers error: ",error)
+        }
+    }
+
+
+
+
     return {
 
         postImageDataToFirebase,
@@ -290,7 +315,8 @@ const useBonnaDesign = () => {
         getRealTime_dataFromDb,
         removeDesignFileData,
         removeDesignData,
-        updateImageData
+        updateImageData,
+        getUsers
     }
 
 

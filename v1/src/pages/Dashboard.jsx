@@ -143,7 +143,7 @@ function Dashboard() {
 
                                 {/* KULLANICI ADMIN İSE */}
                                 {
-                                    userInfo?.user?.isAdmin && <MenuItem onClick={() => {
+                                    userInfo?.user?.isController && <MenuItem onClick={() => {
                                         handleCloseNavMenu()
                                         navi('/bonnadesign/imageupload')
                                     }}>
@@ -171,7 +171,7 @@ function Dashboard() {
 
                             {/* KULLANICI ADMIN İSE */}
                             {
-                                userInfo?.user?.isAdmin && <Button
+                                userInfo?.user?.isController && <Button
 
                                     onClick={() => navi('/bonnadesign/imageupload')}
                                     sx={{ my: 2, color: 'white', display: 'block', textTransform: 'none' }}
@@ -210,7 +210,7 @@ function Dashboard() {
                                 >
                                     <Box onClick={handleCloseUserMenu} s sx={{ display: 'flex', flexDirection: 'column' }}>
 
-                                        {
+                                        {/* {
                                             userInfo?.user?.isAdmin || userInfo?.user?.isController ? (
 
 
@@ -222,8 +222,15 @@ function Dashboard() {
                                                         ))
                                                     }
                                                 </Box>
-                                            ) :
-                                                ("")
+                                            ) : ("")
+                                        } */}
+
+                                        {
+                                             userInfo?.user?.isAdmin || userInfo?.user?.isController && <Button  sx={{ color: '#000000', textTransform: 'none' }} onClick={() => navi('/bonnadesign/settings')}>Settings</Button>
+                                        }
+
+                                        {
+                                             userInfo?.user?.isAdmin && <Button  sx={{ color: '#000000', textTransform: 'none' }} onClick={() => navi('/bonnadesign/users')}>Users</Button>
                                         }
 
                                         <Button sx={{ color: '#C70039', fontWeight: '700', textTransform: 'none' }} onClick={() => logout()}>Out</Button>
