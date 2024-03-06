@@ -282,6 +282,7 @@ const useBonnaDesign = () => {
 
 
 
+    //! kullanıcı listesini getir
     const getUsers = async (address) => {
 
         try {
@@ -305,6 +306,7 @@ const useBonnaDesign = () => {
     }
 
 
+    //! kullanıcı güncelle
     const putUsers = async (address, info) => {
 
         try {
@@ -333,6 +335,57 @@ const useBonnaDesign = () => {
     }
 
 
+    //! kullanıcı ekle
+    const postUsers=async(address,info)=>{
+
+        try {
+
+            const config={
+                method:'post',
+                url:`${import.meta.env.VITE_API_BASE_URL}/${address}`,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                data: JSON.stringify(info)
+            }
+
+            const res = await axios(config)
+            res.status == 201 ? toastSuccessNotify('Success') : toastErrorNotify('Something went wrong !')
+
+            //* kayıt işlemi sonrası kullanıcı bilgisini çek
+            getUsers('users')
+            
+        } catch (error) {
+            console.log("postUsers: ",error)   
+        }
+    }
+
+    //! kullanıcı sil
+    const deleteUsers=async(address,info)=>{
+
+        try {
+            
+            const config={
+                method:'delete',
+                url:`${import.meta.env.VITE_API_BASE_URL}/${address}/${info.id}`,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+            }
+
+            const res = await axios(config)
+            res.status == 204 ? toastSuccessNotify('Deleted') : toastErrorNotify('Not Delete !')
+
+            //* delete işlemi sonrası kullanıcı bilgisini çek
+            getUsers('users')
+
+        } catch (error) {
+            console.log("deleteUsers: ",error)
+        }
+    }
+
 
     return {
 
@@ -344,7 +397,9 @@ const useBonnaDesign = () => {
         removeDesignData,
         updateImageData,
         getUsers,
-        putUsers
+        putUsers,
+        postUsers,
+        deleteUsers
     }
 
 

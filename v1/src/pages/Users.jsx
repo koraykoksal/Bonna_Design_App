@@ -12,7 +12,7 @@ import { NotFound } from './NotFound'
 
 const Users = () => {
 
-    const { getUsers,putUsers } = useBonnaDesign()
+    const { getUsers,putUsers,postUsers,deleteUsers } = useBonnaDesign()
     const { users } = useSelector((state) => state.bonnadesign)
     const { userInfo } = useSelector((state) => state.auth)
     const navigate = useNavigate()
@@ -62,6 +62,10 @@ const Users = () => {
             putUsers('users',info)
             handleClose()
         }
+        else{
+            postUsers('users',info)
+            handleClose()
+        }
   
     }
 
@@ -71,7 +75,6 @@ const Users = () => {
     }, [])
 
 
-    
 
     return (
 

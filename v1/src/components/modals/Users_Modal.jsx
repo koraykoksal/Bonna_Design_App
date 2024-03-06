@@ -52,7 +52,7 @@ const Users_Modal = ({ open, handleClose, info, setInfo, handleChange, handleSub
         setInfo({ ...info, isAdmin: false, isController: false })
     }
 
-    
+
 
     return (
         <div>

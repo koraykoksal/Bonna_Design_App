@@ -22,7 +22,7 @@ const style = {
 
 const DeleteModal = ({ delHandleClose, delOpen, info }) => {
 
-    const {getRealTime_dataFromDb,removeDesignFileData,removeDesignData} = useBonnaDesign()
+    const {getRealTime_dataFromDb,removeDesignFileData,removeDesignData,deleteUsers} = useBonnaDesign()
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -33,11 +33,13 @@ const DeleteModal = ({ delHandleClose, delOpen, info }) => {
             getRealTime_dataFromDb()    // güncel datayı çek
         }
         else if(info.id && info.type=='users'){
-
+            deleteUsers('users',info)
         }
         
         delHandleClose()
     }
+
+    console.log(info)
 
     return (
         <div>
