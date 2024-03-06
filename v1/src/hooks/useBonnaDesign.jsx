@@ -331,6 +331,7 @@ const useBonnaDesign = () => {
 
         } catch (error) {
             console.log("putUsers: ", error)
+            toastErrorNotify(error?.response?.data?.message)
         }
     }
 
@@ -357,7 +358,8 @@ const useBonnaDesign = () => {
             getUsers('users')
             
         } catch (error) {
-            console.log("postUsers: ",error)   
+            console.log("postUsers: ",error)
+            toastErrorNotify(error?.response?.data?.message)   
         }
     }
 
@@ -383,6 +385,7 @@ const useBonnaDesign = () => {
 
         } catch (error) {
             console.log("deleteUsers: ",error)
+            toastErrorNotify(error?.response?.data?.message)
         }
     }
 
