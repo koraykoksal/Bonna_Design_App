@@ -39,7 +39,6 @@ const DeleteModal = ({ delHandleClose, delOpen, info }) => {
         delHandleClose()
     }
 
-    console.log(info)
 
     return (
         <div>
