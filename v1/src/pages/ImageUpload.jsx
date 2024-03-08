@@ -1,4 +1,4 @@
-import { Box, Button, Container, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, Grid, TextField, Typography } from '@mui/material';
 import React, { useCallback } from 'react'
 import { useState, useEffect } from 'react';
 import { uploadPageBgStyle } from '../styles/globalStyle';
@@ -7,13 +7,14 @@ import useBonnaDesign from '../hooks/useBonnaDesign';
 import { toastWarnNotify } from '../helper/ToastNotify';
 import { NotFound } from './NotFound';
 import { useNavigate } from 'react-router-dom';
-
+import { testData } from '../helper/data'
+import { element } from 'prop-types';
 
 const ImageUpload = () => {
 
-    const { currentUser,userInfo } = useSelector((state) => state.auth)
+    const { currentUser, userInfo } = useSelector((state) => state.auth)
     const { fileUpload_Loading } = useSelector((state) => state.bonnadesign)
-
+    const [imgDrops, setImgDrops] = useState([])
     const { postImageDataToFirebase } = useBonnaDesign()
     const [files, setFiles] = useState("")
     const [info, setInfo] = useState({
@@ -30,6 +31,8 @@ const ImageUpload = () => {
         createDate: new Date().getDate(),
         createTime: new Date().getHours() + ":" + new Date().getMinutes()
     })
+    const [fileNames, setFileNames] = useState([])
+    const [imgFile, setImgFile] = useState([])
 
     const navigate = useNavigate()
 
@@ -68,11 +71,7 @@ const ImageUpload = () => {
 
         if (file) {
             setFiles(file)
-
-            // setInfo(prevInfo => ({
-            //     ...prevInfo, fileName: file.name
-            // }))
-            setInfo({...info, fileName: file.name})
+            setInfo({ ...info, fileName: file.name })
         }
 
     }
@@ -90,22 +89,34 @@ const ImageUpload = () => {
     }, []);
 
 
-    // Sürükle-bırak işlemleri için event handlerlar
-    const handleDragOver = (event) => {
-        event.preventDefault(); // Default davranışı engelle
-    };
-
-
     // Sürükle bırak işleminde resim dosyası bırakıldığı zaman yapılacak işlem
     const handleDrop = (e) => {
         e.preventDefault();
         const files = e.dataTransfer.files;
+
+        //! [key, value] burada kullanılan köşeli parantez işleminde destructuring assignment işlemi kullanılmıştır.Bu sayede files içerisindeki datanın value değerine doğrudan ulaşılabilir.
+        const uploadFileName = Object.entries(files).map(([key, value]) => value.name);
+
+        // toplu yüklenen resimlerin isimlerini yakala ve state bilgisini gönder
+        setFileNames(uploadFileName)
+
+        // yüklenecen resim dosyalarını yakala ve statee gönder
+        const img = (Object.entries(files).map(([key, value]) => value))
+        setImgFile(img)
+
+
         if (files.length > 0) {
 
             handleFiles(e.dataTransfer.files);
         }
 
     };
+
+    // Sürükle-bırak işlemleri için event handlerlar
+    const handleDragOver = (event) => {
+        event.preventDefault(); // Default davranışı engelle
+    };
+
 
 
     //! kayıt işlemini yapan fonksiyon
@@ -128,178 +139,202 @@ const ImageUpload = () => {
     }
 
 
+    const topluGonder = (data) => {
+
+        // resim dosyalarının image key değerlerini bir array içerisinde göster exp:['key1','key2']
+        //* excelden gelen data
+        const imgInfo = data.map(item => {
+            return {
+                ...item, imageKeyWords: item.imageKeyWords.split('-')
+            }
+        });
+
+        const sonuc = imgFile.map(element => {
+            // eşleştirme yap
+            const info = imgInfo.find(element2 => element.name === element2.fileName)
+            const newInfo = {
+                ...info,
+                createdUser: currentUser,
+                createYear: new Date().getFullYear(),
+                createMonth: new Date().getMonth() + 1,
+                createDate: new Date().getDate(),
+                createTime: new Date().getHours() + ":" + new Date().getMinutes()
+            }
+            postImageDataToFirebase(element, newInfo)
+
+        })
+
+
+    }
+
+
     return (
         <div style={uploadPageBgStyle}>
 
             {
                 userInfo?.user?.isController ?
-                (
-                    <Box sx={{ display: 'flex', flexDirection: 'column', p:3, gap: 5 }}>
+                    (
+                        <Box sx={{ display: 'flex', flexDirection: 'column', p: 3, gap: 5 }}>
 
-                <Typography align='center' color={'#000000'} letterSpacing={5} fontFamily={'Calibri'} mt={10}>Upload Image</Typography>
-
-
-                <Container sx={{ display: 'flex', flexDirection: 'column', gap: 5, pb: 10 }} maxWidth={'md'} component={'form'} onSubmit={handleSave}>
-
-                    <TextField
-                    required
-                        fullWidth
-                        type='text'
-                        name='imageCode'
-                        id='imageCode'
-                        label='Image Code'
-                        value={info.imageCode}
-                        onChange={handleChangeInfo}
-                    />
-                    <TextField
-                        fullWidth
-                        type='text'
-                        name='collectionName'
-                        id='collectionName'
-                        label='Collection Name'
-                        value={info.collectionName}
-                        onChange={handleChangeInfo}
-                    />
-                    <TextField
-                        fullWidth
-                        type='text'
-                        name='designName'
-                        id='designName'
-                        label='Design Name'
-                        value={info.designName}
-                        onChange={handleChangeInfo}
-                    />
-                    <TextField
-                        fullWidth
-                        type='text'
-                        name='options'
-                        id='options'
-                        label='Application'
-                        value={info.options}
-                        onChange={handleChangeInfo}
-                    />
-
-                    <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3 }}>
-
-                        <TextField
-                            required
-                            fullWidth
-                            type='text'
-                            name='imageKeyWords'
-                            id='imageKeyWords'
-                            label='Key Word 1'
-                            value={info.imageKeyWords[0]}
-                            onChange={handleImageKeyWordChange(0)}
-                        />
-                        <TextField
-                            fullWidth
-                            type='text'
-                            name='imageKeyWords'
-                            id='imageKeyWords'
-                            label='Key Word 2'
-                            value={info.imageKeyWords[1]}
-                            onChange={handleImageKeyWordChange(1)}
-                        />
-                        <TextField
-                            fullWidth
-                            type='text'
-                            name='imageKeyWords'
-                            id='imageKeyWords'
-                            label='Key Word 3'
-                            value={info.imageKeyWords[2]}
-                            onChange={handleImageKeyWordChange(2)}
-                        />
-                        <TextField
-                            fullWidth
-                            type='text'
-                            name='imageKeyWords'
-                            id='imageKeyWords'
-                            label='Key Word 4'
-                            value={info.imageKeyWords[3]}
-                            onChange={handleImageKeyWordChange(3)}
-                        />
-                        <TextField
-                            fullWidth
-                            type='text'
-                            name='imageKeyWords'
-                            id='imageKeyWords'
-                            label='Key Word 5'
-                            value={info.imageKeyWords[4]}
-                            onChange={handleImageKeyWordChange(4)}
-                        />
-                    </Box>
+                            <Typography align='center' color={'#000000'} letterSpacing={5} fontFamily={'Calibri'} mt={10}>Upload Image</Typography>
 
 
+                            <Container sx={{ display: 'flex', flexDirection: 'column', gap: 5, pb: 10 }} maxWidth={'md'} component={'form'} onSubmit={handleSave}>
 
-                    <TextField
-                        fullWidth
-                        type='text'
-                        name='imageOwner'
-                        id='imageOwner'
-                        label='Owner'
-                        value={info.imageOwner}
-                        onChange={handleChangeInfo}
-                    />
+                                <TextField
+                                    required
+                                    fullWidth
+                                    type='text'
+                                    name='imageCode'
+                                    id='imageCode'
+                                    label='Image Code'
+                                    value={info.imageCode}
+                                    onChange={handleChangeInfo}
+                                />
+                                <TextField
+                                    fullWidth
+                                    type='text'
+                                    name='collectionName'
+                                    id='collectionName'
+                                    label='Collection Name'
+                                    value={info.collectionName}
+                                    onChange={handleChangeInfo}
+                                />
+                                <TextField
+                                    fullWidth
+                                    type='text'
+                                    name='designName'
+                                    id='designName'
+                                    label='Design Name'
+                                    value={info.designName}
+                                    onChange={handleChangeInfo}
+                                />
+                                <TextField
+                                    fullWidth
+                                    type='text'
+                                    name='options'
+                                    id='options'
+                                    label='Application'
+                                    value={info.options}
+                                    onChange={handleChangeInfo}
+                                />
 
-                    <TextField
-                        required
-                        type='file'
-                        name='fileName'
-                        id='fileName'
-                        onChange={handleChangeFileName}
-                        inputProps={{
-                            accept: '.png , .jpeg , .jpg'
-                        }}
+                                <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3 }}>
+
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        type='text'
+                                        name='imageKeyWords'
+                                        id='imageKeyWords'
+                                        label='Key Word 1'
+                                        value={info.imageKeyWords[0]}
+                                        onChange={handleImageKeyWordChange(0)}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        type='text'
+                                        name='imageKeyWords'
+                                        id='imageKeyWords'
+                                        label='Key Word 2'
+                                        value={info.imageKeyWords[1]}
+                                        onChange={handleImageKeyWordChange(1)}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        type='text'
+                                        name='imageKeyWords'
+                                        id='imageKeyWords'
+                                        label='Key Word 3'
+                                        value={info.imageKeyWords[2]}
+                                        onChange={handleImageKeyWordChange(2)}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        type='text'
+                                        name='imageKeyWords'
+                                        id='imageKeyWords'
+                                        label='Key Word 4'
+                                        value={info.imageKeyWords[3]}
+                                        onChange={handleImageKeyWordChange(3)}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        type='text'
+                                        name='imageKeyWords'
+                                        id='imageKeyWords'
+                                        label='Key Word 5'
+                                        value={info.imageKeyWords[4]}
+                                        onChange={handleImageKeyWordChange(4)}
+                                    />
+                                </Box>
 
 
-                    />
 
-                    {/* <div
-                        onDragOver={handleDragOver}
-                        onDrop={handleDrop}
-                        style={{ border: '2px dashed #ccc', padding: '20px', marginBottom: '10px', borderRadius: 5, height: 130, position: 'relative' }}
-                    >
+                                <TextField
+                                    fullWidth
+                                    type='text'
+                                    name='imageOwner'
+                                    id='imageOwner'
+                                    label='Owner'
+                                    value={info.imageOwner}
+                                    onChange={handleChangeInfo}
+                                />
 
-                        <Typography color={'#bebebe'} align='center'>
-                            {
-                                info.fileName ? info.fileName : 'Image Move Here'
-                            }
-                        </Typography>
+                                <TextField
+                                    required
+                                    type='file'
+                                    name='fileName'
+                                    id='fileName'
+                                    onChange={handleChangeFileName}
+                                    inputProps={{
+                                        accept: '.png , .jpeg , .jpg'
+                                    }}
+                                />
 
-                        <input
-                            id='fileInput'
-                            onChange={handleChangeFileName}
-                            style={{ bottom: 10, position: 'absolute' }}
-                            type='file'
-                            accept='.png , .jpeg , .jpg'
-                        />
-                    </div> */}
+                                <div
+                                    onDragOver={handleDragOver}
+                                    onDrop={handleDrop}
+                                    style={{ border: '2px dashed #ccc', padding: '20px', marginBottom: '10px', borderRadius: 5, height: 130, position: 'relative', overflow: 'auto' }}
+                                >
 
-                    {
-                        fileUpload_Loading ?
-                            (
-                                <Button className='loader' sx={{ margin: 'auto' }}></Button>
-                            )
-                            :
-                            (
-                                <Button variant='contained' type='submit' sx={{ letterSpacing: 5, textTransform: 'none' }}>Save</Button>
-                            )
-                    }
+                                    {
+                                        fileNames.length > 0 ? fileNames.map((item, index) => (
+                                            <Typography key={index} color={'#bebebe'} align='center'>{item}</Typography>
+                                        ))
+                                            :
+                                            <Typography color={'#bebebe'} align='center'>Image Move Here</Typography>
+                                    }
+
+                                </div>
+
+                                <Button variant='outlined' onClick={() => topluGonder(testData)}>Send</Button>
+
+                                {
+                                    fileUpload_Loading ?
+                                        (
+                                            <Button className='loader' sx={{ margin: 'auto' }}></Button>
+                                        )
+                                        :
+                                        (
+                                            <Button variant='contained' type='submit' sx={{ letterSpacing: 5, textTransform: 'none' }}>Save</Button>
+                                        )
+                                }
 
 
 
 
-                </Container>
+                            </Container>
 
-            </Box>
-                )
-                :
-                (
-                    <NotFound/>
-                )
+                        </Box>
+                    )
+                    :
+                    (
+                        <NotFound />
+                    )
             }
 
-            
+
         </div>
     )
 }
