@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState={
     currentUser:"",
-    loading:false,
+    loginLoading:false,
     error:false,
     token:"",
     userInfo:[],
@@ -18,24 +18,24 @@ const authSlice=createSlice({
     reducers:{
 
         fetchStart:(state)=>{
-            state.loading=true;
+            state.loginLoading=true;
             state.error = false;
             state.userInfo =[]
             state.managerPersonels=[]
         },
         fetchFail:(state)=>{
-            state.loading=false;
+            state.loginLoading=false;
             state.error=true;
         },
         fetchLoginSuccess:(state,{payload})=>{
-            state.loading=false;
+            state.loginLoading=false;
             state.token = payload?.token
             state.currentUser=payload?.user?.name+" "+payload?.user?.surname
             state.userInfo = payload
         
         },
         fetchLogoutSuccess:(state)=>{
-            state.loading=false;
+            state.loginLoading=false;
             state.currentUser = "";
             state.token="";
             state.userInfo =[]
@@ -43,7 +43,7 @@ const authSlice=createSlice({
         },
         signLoginSuccess:(state,{payload})=>{
             console.log(payload)
-            state.loading=false;
+            state.loginLoading=false;
             state.currentUser=payload.email
             state.userInfo = payload
         

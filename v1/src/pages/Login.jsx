@@ -17,26 +17,22 @@ import { useSelector } from 'react-redux'
 export const Login = () => {
 
 
-  const { loading } = useSelector((state) => state.auth)
+  const { loginLoading } = useSelector((state) => state.auth)
   const [info, setInfo] = useState({
     email: "",
     password: ""
   })
 
-  const { login, signIn } = useAuthCall()
+  const { login } = useAuthCall()
 
   const handleChange = (e) => {
     setInfo({ ...info, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = (e) => {
-
     e.preventDefault()
 
-    //login işlemi için çalıştırılan hook
-
     login(info)
-    // signIn(info)
 
     setInfo({
       email: "",
@@ -44,7 +40,18 @@ export const Login = () => {
     })
   }
 
-console.log(loading)
+
+  const handleKeyDown = (e) => {
+    if (e.target == 'Enter') {
+      login(info)
+
+      setInfo({
+        email: "",
+        password: ""
+      })
+    }
+
+  }
 
   return (
 
@@ -83,7 +90,7 @@ console.log(loading)
             </Avatar>
 
 
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }} component='form' onSubmit={handleSubmit}>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }} component='form' onSubmit={handleSubmit} onKeyUp={handleKeyDown}>
               <TextField
                 required
                 label="Email"
@@ -109,9 +116,9 @@ console.log(loading)
               />
 
               {
-                loading ?
+                loginLoading ?
                   (
-                    <div className='btnLoginLoader' style={{margin:'auto'}}></div>
+                    <div className='btnLoginLoader' style={{ margin: 'auto' }}></div>
                   )
                   :
                   (
