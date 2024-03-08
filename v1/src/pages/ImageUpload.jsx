@@ -313,7 +313,7 @@ const ImageUpload = () => {
                                 {
                                     fileUpload_Loading ?
                                         (
-                                            <Button className='loader' sx={{ margin: 'auto' }}></Button>
+                                            <div className='loader' style={{margin:'auto'}}></div>
                                         )
                                         :
                                         (

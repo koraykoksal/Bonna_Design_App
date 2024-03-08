@@ -6,7 +6,7 @@ import { getDatabase, onValue, remove, set, update, ref as dbRef } from "firebas
 import { getFirestore, setDoc, doc } from "firebase/firestore";
 import { uid } from "uid"
 import { toastSuccessNotify, toastErrorNotify, toastWarnNotify } from "../helper/ToastNotify"
-import { fetchDesignData, fetchFail, fetchSearchData, fetchSearchEnd, fetchSearchStart, fetchUploadEnd, fetchUploadStart, fetchUsersData } from "../features/bonnaDesignSlice";
+import { fetchDesignData, fetchFail, fetchSearchData, fetchSearchStart, fetchUploadEnd, fetchUploadStart, fetchUsersData } from "../features/bonnaDesignSlice";
 import Fuse from 'fuse.js'
 
 
@@ -173,6 +173,7 @@ const useBonnaDesign = () => {
 
                     };
 
+                    // Fuse string algoritması imgkesy içinde gelen değerlere en yakın sonucu bulur
                     const fuse = new Fuse(imgkeys, options);
 
                     const data = result.filter(item =>
@@ -183,7 +184,6 @@ const useBonnaDesign = () => {
 
                     dispatch(fetchSearchData(data))
 
-                    dispatch(fetchSearchEnd())
                 }
                 else {
                     toastWarnNotify('There is not record !')

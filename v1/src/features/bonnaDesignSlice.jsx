@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
 
     fileUpload_Loading: false,
+    search_Loading:false,
     loading: false,
     error: false,
     searchData: [],
@@ -37,16 +38,18 @@ const bonnaDesignSlice = createSlice({
             state.error = false
         },
         fetchSearchStart: (state) => {
-            state.loading = true
+            state.search_Loading = true
             state.error = false
             state.designData = []
         },
-        fetchSearchEnd: (state) => {
-            state.loading = false
-            state.error = false
-        },
+        // fetchSearchEnd: (state) => {
+        //     state.search_Loading = false
+        //     state.error = false
+        // },
         fetchSearchData: (state, { payload }) => {
             state.searchData = payload
+            state.search_Loading = false
+            state.error = false
         },
         fetchDesignData: (state, { payload }) => {
             state.designData = payload
@@ -68,7 +71,7 @@ export const {
     fetchUploadStart,
     fetchUploadEnd,
     fetchSearchStart,
-    fetchSearchEnd,
+    // fetchSearchEnd,
     fetchFail,
     fetchDesignData,
     fetchSearchData,

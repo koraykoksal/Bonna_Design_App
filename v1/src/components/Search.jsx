@@ -7,7 +7,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useState, useEffect } from 'react';
 import useBonnaDesign from '../hooks/useBonnaDesign';
 
-const Search = ({info,handleChange,handleSubmit,handleKeyDown}) => {
+const Search = ({ info, handleChange, handleSubmit, handleKeyDown }) => {
 
 
 
@@ -42,6 +42,8 @@ const Search = ({info,handleChange,handleSubmit,handleKeyDown}) => {
                         <SearchIcon />
                     </IconButton>
                 </Paper>
+
+                <Typography variant='subtitle2' style={{padding:3}} color={'#ADC4CE'}>Example : MOSAIC BRUSH FLOWER</Typography>
 
             </Container>
 

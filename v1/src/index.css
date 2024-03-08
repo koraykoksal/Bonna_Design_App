@@ -15,6 +15,60 @@
     animation: l15 2s infinite;
 }
 
+.btnLoginLoader {
+    width: 60px;
+    aspect-ratio: 4;
+    --_g: no-repeat radial-gradient(circle closest-side, #000 90%, #0000);
+    background:
+        var(--_g) 0% 50%,
+        var(--_g) 50% 50%,
+        var(--_g) 100% 50%;
+    background-size: calc(100%/3) 100%;
+    animation: l7 1s infinite linear;
+}
+
+
+.imgLoader {
+    width: 50px;
+    aspect-ratio: 1;
+    display: grid;
+    border-radius: 50%;
+    background: conic-gradient(#25b09b 25%,#f03355 0 50%,#514b82 0 75%,#ffa516 0);
+    animation: l22 2s infinite linear;
+  }
+  .imgLoader::before,
+  .imgLoader::after {
+     content: "";
+     grid-area: 1/1;
+     margin: 15%;
+     border-radius: 50%;
+     background: inherit;
+     animation: inherit;
+  }
+  .imgLoader::after {
+     margin: 25%;
+     animation-duration: 3s;
+  }
+  @keyframes l22 {
+    100% {transform: rotate(1turn)}
+  }
+
+
+
+@keyframes l7 {
+    33% {
+        background-size: calc(100%/3) 0%, calc(100%/3) 100%, calc(100%/3) 100%
+    }
+
+    50% {
+        background-size: calc(100%/3) 100%, calc(100%/3) 0%, calc(100%/3) 100%
+    }
+
+    66% {
+        background-size: calc(100%/3) 100%, calc(100%/3) 100%, calc(100%/3) 0%
+    }
+}
+
 @keyframes l15 {
     0% {
         background-position: 0 calc(-2*100%/4), 0 calc(-2*100%/4), 0 calc(-2*100%/4), 0 calc(-2*100%/4), 0 calc(-2*100%/4)

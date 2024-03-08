@@ -12,10 +12,12 @@ import useAuthCall from '../hooks/useAuthCall'
 import { useState } from 'react'
 import { CardMedia } from '@mui/material'
 import { loginPageBgStyle } from '../styles/globalStyle'
+import { useSelector } from 'react-redux'
 
 export const Login = () => {
 
 
+  const { loading } = useSelector((state) => state.auth)
   const [info, setInfo] = useState({
     email: "",
     password: ""
@@ -71,13 +73,13 @@ export const Login = () => {
             <Avatar
               sx={{
                 backgroundColor: "secondary.light",
-                margin:'auto',
-                marginBottom:3,
+                margin: 'auto',
+                marginBottom: 3,
                 width: 40,
                 height: 40,
               }}
             >
-              <LockIcon size="30" color='blue'/>
+              <LockIcon size="30" color='blue' />
             </Avatar>
 
 
@@ -105,9 +107,19 @@ export const Login = () => {
                 value={info.password}
                 onChange={handleChange}
               />
-              <Button variant="contained" type="submit" sx={{ letterSpacing: 5, textTransform: 'none' }}>
-                Login
-              </Button>
+
+              {
+                loading ?
+                  (
+                    <div className='btnLoginLoader' style={{margin:'auto'}}></div>
+                  )
+                  :
+                  (
+                    <Button variant="contained" type="submit" sx={{ letterSpacing: 5, textTransform: 'none' }}>
+                      Login
+                    </Button>
+                  )
+              }
 
             </Box>
 
