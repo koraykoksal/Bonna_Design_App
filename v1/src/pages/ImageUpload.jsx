@@ -292,7 +292,7 @@ const ImageUpload = () => {
                                     }}
                                 />
 
-                                <div
+                                {/* <div
                                     onDragOver={handleDragOver}
                                     onDrop={handleDrop}
                                     style={{ border: '2px dashed #ccc', padding: '20px', marginBottom: '10px', borderRadius: 5, height: 130, position: 'relative', overflow: 'auto' }}
@@ -308,7 +308,7 @@ const ImageUpload = () => {
 
                                 </div>
 
-                                <Button variant='outlined' onClick={() => topluGonder(testData)}>Send</Button>
+                                <Button variant='outlined' onClick={() => topluGonder(testData)}>Send</Button> */}
 
                                 {
                                     fileUpload_Loading ?
