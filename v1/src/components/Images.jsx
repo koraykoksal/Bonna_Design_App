@@ -19,7 +19,7 @@ const Images = ({ searchData }) => {
         setOpen(true)
     }
 
-    console.log(searchData)
+
     return (
         <div>
 
