@@ -7,6 +7,7 @@ import { getFirestore, setDoc, doc } from "firebase/firestore";
 import { uid } from "uid"
 import { toastSuccessNotify, toastErrorNotify, toastWarnNotify } from "../helper/ToastNotify"
 import { fetchDesignData, fetchFail, fetchSearchData, fetchSearchEnd, fetchSearchStart, fetchUploadEnd, fetchUploadStart, fetchUsersData } from "../features/bonnaDesignSlice";
+import Fuse from 'fuse.js'
 
 
 const useBonnaDesign = () => {
@@ -161,8 +162,23 @@ const useBonnaDesign = () => {
 
                 if (result.length > 0) {
 
+                    // const data = result.filter(item =>
+                    //     item.imageKeyWords && item.imageKeyWords.some(keyword => imgkeys.includes(keyword))
+                    // );
+
+                    const options = {
+                        includeScore: true,
+                        isCaseSensitive:false
+                        // Fuse.js için diğer yapılandırma seçenekleri
+
+                    };
+
+                    const fuse = new Fuse(imgkeys, options);
+
                     const data = result.filter(item =>
-                        item.imageKeyWords && item.imageKeyWords.some(keyword => imgkeys.includes(keyword))
+                        item.imageKeyWords && item.imageKeyWords.some(keyword =>
+                            fuse.search(keyword).length > 0
+                        )
                     );
 
                     dispatch(fetchSearchData(data))
@@ -337,13 +353,13 @@ const useBonnaDesign = () => {
 
 
     //! kullanıcı ekle
-    const postUsers=async(address,info)=>{
+    const postUsers = async (address, info) => {
 
         try {
 
-            const config={
-                method:'post',
-                url:`${import.meta.env.VITE_API_BASE_URL}/${address}`,
+            const config = {
+                method: 'post',
+                url: `${import.meta.env.VITE_API_BASE_URL}/${address}`,
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -356,21 +372,21 @@ const useBonnaDesign = () => {
 
             //* kayıt işlemi sonrası kullanıcı bilgisini çek
             getUsers('users')
-            
+
         } catch (error) {
-            console.log("postUsers: ",error)
-            toastErrorNotify(error?.response?.data?.message)   
+            console.log("postUsers: ", error)
+            toastErrorNotify(error?.response?.data?.message)
         }
     }
 
     //! kullanıcı sil
-    const deleteUsers=async(address,info)=>{
+    const deleteUsers = async (address, info) => {
 
         try {
-            
-            const config={
-                method:'delete',
-                url:`${import.meta.env.VITE_API_BASE_URL}/${address}/${info.id}`,
+
+            const config = {
+                method: 'delete',
+                url: `${import.meta.env.VITE_API_BASE_URL}/${address}/${info.id}`,
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -384,7 +400,7 @@ const useBonnaDesign = () => {
             getUsers('users')
 
         } catch (error) {
-            console.log("deleteUsers: ",error)
+            console.log("deleteUsers: ", error)
             toastErrorNotify(error?.response?.data?.message)
         }
     }
