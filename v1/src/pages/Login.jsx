@@ -14,6 +14,8 @@ import { CardMedia } from '@mui/material'
 import { loginPageBgStyle } from '../styles/globalStyle'
 import { useSelector } from 'react-redux'
 
+
+
 export const Login = () => {
 
 
@@ -53,6 +55,7 @@ export const Login = () => {
 
   }
 
+
   return (
 
     <div style={loginPageBgStyle}>
@@ -60,7 +63,18 @@ export const Login = () => {
       <Container sx={{ mt: 15 }}>
 
 
-        <Typography align='center' variant='h5' p={3} letterSpacing={5} color={'#0B60B0'} fontWeight={700}>Bonna Design Research App</Typography>
+        <Typography
+          align='center'
+          variant='h5'
+          p={3}
+          letterSpacing={5}
+          color={'#0B60B0'}
+          fontWeight={700}
+        >
+          Bonna Design Research App
+        </Typography>
+
+
 
         <Grid
           container

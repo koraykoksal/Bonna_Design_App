@@ -3,6 +3,7 @@ import pattern2 from "../assets/img/bg2.png"
 import pattern3 from "../assets/img/bg3.png"
 import pattern4 from "../assets/img/bg4.jpg"
 import pattern6 from "../assets/img/bg6.jpg"
+import pattern7 from "../assets/img/wild.jpeg"
 
 
 // home page css
@@ -78,4 +79,15 @@ export const editModalStyle = {
 export const usersPageButton = {
     textTransform: 'none',
     width: 100
+}
+
+export const loginTypoStyle = {
+    backgroundImage: `url(${pattern7})`,
+    backgroundSize: 'contain',
+    WebkitBackgroundClip: 'text',
+    backgroundClip: 'text',
+    color: 'transparent',
+    fontSize: 30,
+    fontWeight: 700
+
 }
