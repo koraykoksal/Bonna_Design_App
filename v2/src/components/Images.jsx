@@ -2,6 +2,8 @@ import { Box, Card, CardActionArea, CardContent, CardMedia, Typography } from '@
 import React, { useState } from 'react'
 import ImageDetail_Modal from './modals/ImageDetail_Modal';
 import { useSelector } from 'react-redux';
+import { FaRegHeart } from "react-icons/fa";
+import IconButton from '@mui/material/IconButton';
 
 const Images = ({ searchData }) => {
 
@@ -37,19 +39,46 @@ const Images = ({ searchData }) => {
                         (
                             searchData?.map((item, id) => (
 
-                                <CardActionArea key={id} style={{ maxWidth: 400, margin: "auto", marginTop: "3.5rem", marginBottom: "3.5rem" }}>
+                                // <CardActionArea key={id} style={{ maxWidth: 400, margin: "auto", marginTop: "3.5rem", marginBottom: "3.5rem" }}>
 
 
+                                //     <CardMedia
+                                //         loading='lazy'
+                                //         component="img"
+                                //         height="450"
+                                //         src={item.imgUrl}
+                                //         sx={{ borderRadius: '0.6rem', height: 'auto', backgroundColor: 'transparent'}}
+                                //         onClick={() => handleCardClick(item)}
+
+                                //     />
+
+                                // </CardActionArea>
+                                <Card key={id} style={{ maxWidth: 400, margin: "auto", marginTop: "3.5rem", marginBottom: "3.5rem", backgroundColor: 'transparent', cursor: 'pointer',position:'relative' }}>
                                     <CardMedia
                                         loading='lazy'
                                         component="img"
                                         height="450"
                                         src={item.imgUrl}
-                                        sx={{ borderRadius: '0.6rem', height: 'auto', backgroundColor: 'transparent'}}
+                                        sx={{borderRadius: '0.6rem', height: 'auto', backgroundColor: 'transparent' }}
                                         onClick={() => handleCardClick(item)}
-                                    />
 
-                                </CardActionArea>
+                                    />
+                                    <IconButton
+                                        sx={{
+                                            position: 'absolute',
+                                            top: 0, // Bu değerleri ihtiyacınıza göre ayarlayın
+                                            left: 0, // Bu değerleri ihtiyacınıza göre ayarlayın
+                                            // color: 'primary.main', // İkonun rengi
+                                            // backgroundColor: 'rgba(255, 255, 255, 0.7)', // İkonun arka plan rengi, saydamlık için rgba kullanıldı
+                                            // borderRadius: '50%', // Yuvarlak kenarlar için
+                                            '&:hover': {
+                                                backgroundColor: 'rgba(255, 255, 255, 0.4)', // İkonun üzerine gelindiğinde arka plan rengi
+                                            }
+                                        }}
+                                    >
+                                        <FaRegHeart size={18}/>
+                                    </IconButton>
+                                </Card>
                             ))
                         )
 
