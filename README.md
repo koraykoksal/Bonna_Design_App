@@ -21,6 +21,11 @@ Install Bonna_Design_App with npm
 ```
 
 
-
-
-
+## Images
+![](./pictures/loginPage.png)
+![](./pictures/searchPage.png)
+![](./pictures/result1.png)
+![](./pictures/result2.png)
+![](./pictures/settingsPage.png)
+![](./pictures/usersPage.png)
+![](./pictures/editModal.png)
